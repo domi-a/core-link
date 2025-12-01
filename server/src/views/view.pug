@@ -1,0 +1,37 @@
+include includes/head.pug
+include includes/menu.pug
+
+div
+  div(class="p-3")
+    if data.url
+      div(class="input-group flex-nowrap mb-4")
+        span(class="input-group-text" id="url-label")="url"
+        input(id="url" type="text" class="form-control" aria-label="url" readonly aria-describedby="url-label" value=data.url)
+        button(class="input-group-text" type="button" onclick='copy()')="copy"
+      ul
+        li='copy url above'
+        li launch 'nfc tools' on your phone <a href='https://play.google.com/store/apps/details?id=com.wakdev.wdnfc' target='blank'>android</a> / <a href='https://apps.apple.com/us/app/nfc-tools/id1252962749' target='blank'>iphone</a>
+        li='add custom-url data set in write section'
+        li='paste url'
+        li='activate write mode'
+        li=`touch NFC-${data.appTitle}-item with center back of phone (most android) or top side (iphone)`       
+
+    h2(class='d-flex justify-content-center align-items-center flex-wrap')
+      span(class="flex-wrap text-center")
+        span(class="px-1 fs-4 text-secondary mt-auto")='from' 
+        span(class="px-1 fs-1 text-center")=data.from
+      span(class="flex-wrap text-center")
+        span(class="px-1 fs-4 text-secondary mt-auto ")='to' 
+        span(class="px-1 fs-1 text-center")=data.to
+    h3(class='d-flex justify-content-around align-items-center pt-4')=data.text
+  if data.imageUrl
+    img(
+        src=data.imageUrl
+        width="100%" height="100%" frameBorder="0" allowFullScreen
+        )
+  div(class="m-2 d-flex fst-italic opacity-25")
+    span(class="flex-grow-1")=`views: ${data.reads}`
+    span(class="")=`changes: ${data.writes}`        
+  include includes/footer.pug
+script
+  include includes/script.js

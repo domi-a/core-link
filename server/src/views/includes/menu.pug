@@ -1,0 +1,19 @@
+nav(class="navbar navbar-dark bg-dark ")
+  div(class="container-fluid d-flex")
+    button(class="navbar-toggler" style="text-align: left;" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation")
+      span(class="navbar-toggler-icon")
+    span(class='text-light app-title fs-1 fw-semibold' style="position: absolute; left: 50%;transform: translateX(-50%); text-align: center;")=`${data.appTitle}`
+
+div(class="collapse" id="navbarToggleExternalContent" data-bs-theme="dark")
+  div(class="bg-dark p-2 d-flex flex-column mb-3")
+    a(class="navbar-brand m-2 btn btn-light fs-3 fw-semibold" href=`/`)='FAQ'
+    //- a(class="navbar-brand m-2 btn btn-light  fs-3 fw-semibold" href="/create")=`create own entry` 
+    a(class="navbar-brand m-2 btn btn-light fs-3 fw-semibold" href="javascript:window.history.back();")=`back` 
+    if data
+      if data.locked && !data.unlockAllowed
+        span(class="navbar-brand m-2 btn btn-light")=`this entry is locked till ${data.fixatedTillStr}`
+      else if data.locked && data.unlockAllowed
+        a(class="navbar-brand m-2 btn btn-warning fs-3 fw-semibold" href=`/unlock/${data.guid}`)=`unlock (lock :${data.fixatedTillStr})`
+      else if data.guid
+        a(class="navbar-brand m-2 btn btn-warning fs-3 fw-semibold" href=`/edit/${data.guid}`)=`change this entry`
+      //- span(class="navbar-brand m-2 btn btn-light")=`reads:${data.reads} / writes:${data.writes}`

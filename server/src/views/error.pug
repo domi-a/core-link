@@ -1,0 +1,20 @@
+include includes/head.pug
+include includes/menu.pug
+
+div
+  div(class="p-4")
+    h2(class='d-flex justify-content-center align-items-center')=`error: ${data.error}`
+    h3=data.message
+  if data.error === 404
+    img(
+      src='https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExcDFnemZxbzFub2V6YnJwbHp0NGNnbnE5N3YycHgzYW1lbmJtZndwMCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/9J7tdYltWyXIY/giphy.gif'
+      width="100%" height="100%" frameBorder="0" allowFullScreen
+      )
+  else if data.error === 403
+    img(
+      src='https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExejhjNWhuOHQxNzZ6M3IxYmRpYmdvMXg2YnZuOTF0eTdtczA2dWN6bSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/1Yw4BmHn8QNWD4Bl4l/giphy.gif'
+      width="100%" height="100%" frameBorder="0" allowFullScreen
+      )
+
+  
+include includes/footer.pug    

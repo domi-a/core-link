@@ -1,0 +1,12 @@
+include includes/head.pug
+include includes/menu.pug
+include includes/gifmodal.pug
+
+div(class="p-4")
+h2(class='d-flex justify-content-center align-items-center')='create'
+form(action="/create" method="post")
+    include includes/mainForm.pug
+script
+  include includes/modal.js
+  include includes/script.js
+include includes/footer.pug

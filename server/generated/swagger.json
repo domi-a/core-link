@@ -1,0 +1,92 @@
+{
+	"openapi": "3.0.0",
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {},
+		"securitySchemes": {}
+	},
+	"info": {
+		"title": "server",
+		"version": "1.0.0",
+		"license": {
+			"name": "ISC"
+		},
+		"contact": {}
+	},
+	"paths": {
+		"/api/tenor/search": {
+			"get": {
+				"operationId": "Search",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"list": {
+											"items": {
+												"properties": {
+													"url70Per": {},
+													"url8Per": {},
+													"url2Per": {},
+													"url": {},
+													"id": {}
+												},
+												"required": [
+													"url70Per",
+													"url8Per",
+													"url2Per",
+													"url",
+													"id"
+												],
+												"type": "object"
+											},
+											"type": "array"
+										},
+										"next": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"list",
+										"next"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "str",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "next",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "http://localhost:3000/"
+		}
+	]
+}

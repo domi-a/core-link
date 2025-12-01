@@ -1,0 +1,57 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "server",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run-script",
+                "server"
+            ],
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "cwd": "${workspaceFolder}/server"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "watch-server",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run-script",
+                "server-watch"
+            ],
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "cwd": "${workspaceFolder}/server"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "gen-routes",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run-script",
+                "gen-routes"
+            ],
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "cwd": "${workspaceFolder}/server"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "build",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run-script",
+                "build"
+            ],
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "cwd": "${workspaceFolder}/server"
+        },
+    ]
+}
