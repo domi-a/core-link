@@ -1,0 +1,14 @@
+include includes/head.pug
+include includes/menu.pug
+
+div(class="fs-3 p-4")
+    h1(class="pb-4")=`create your own hardware for ${data.appTitle} with this service`
+    h2 source nfc tags
+    p(class="mb-4") before producing hardware items you need nfc-tags. cheap ones that are known to work <a href="https://de.aliexpress.com/item/1005008604718409.html" target="_blank">Ntag 213 on aliexpress</a> round ones or square ones (wet means with adhesive)
+    h2 produce hardware
+    p(class="mb-4") tbd: provide 3d-models and print instructions
+    
+    h2=`after creating a hardware thing`
+    p(class="mb-4") you need <strong>nfc tools</strong> on your phone to write the created link to the nfc-tag <a href='https://play.google.com/store/apps/details?id=com.wakdev.wdnfc' target='blank'>android</a> / <a href='https://apps.apple.com/us/app/nfc-tools/id1252962749' target='blank'>iphone</a>
+    div(class="d-flex justify-content-center align-items-center")
+        a(class="btn btn-dark btn-lg flex-fill" href="/create")='create own entry'

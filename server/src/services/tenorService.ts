@@ -29,16 +29,28 @@ export class TenorService {
 }
 
 function mapResults({ next, results }: SearchResponse) {
-  return {
+  const res = {
     next,
-    list: results.map((resultItem) => {
-      return {
-        id: resultItem.id,
-        nanoUrl: resultItem.media_formats.nanogif.url,
-        tinyUrl: resultItem.media_formats.tinygif.url,
-        mediumUrl: resultItem.media_formats.mediumgif.url,
-        url: resultItem.media_formats.gif.url,
-      };
-    }),
+    list: results
+      .map((resultItem) => {
+        try {
+          const [width, height] = resultItem.media_formats.nanogif.dims;
+          const height2Width = width && height ? height / width : 0;
+          return {
+            id: resultItem.id,
+            nanoUrl: resultItem.media_formats.nanogif.url,
+            tinyUrl: resultItem.media_formats.tinygif.url,
+            mediumUrl: resultItem.media_formats.mediumgif.url,
+            url: resultItem.media_formats.gif.url,
+            height2Width,
+          };
+        } catch (e) {
+          console.error('error mapping tenor results');
+          return undefined;
+        }
+      })
+      .filter((i) => i !== undefined),
   };
+
+  return res;
 }

@@ -4,19 +4,6 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "server",
-            "runtimeExecutable": "npm",
-            "runtimeArgs": [
-                "run-script",
-                "server"
-            ],
-            "console": "integratedTerminal",
-            "internalConsoleOptions": "neverOpen",
-            "cwd": "${workspaceFolder}/server"
-        },
-        {
-            "type": "node",
-            "request": "launch",
             "name": "watch-server",
             "runtimeExecutable": "npm",
             "runtimeArgs": [

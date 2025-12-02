@@ -1,7 +1,7 @@
 /** @format */
 import { Express, NextFunction, Request, Response } from 'express';
 import { config } from '../config/config';
-import { iocContainer } from '../ioc';
+import { iocContainer } from '../config/ioc';
 import { PathFoundError } from '../middlewares/errorHandler';
 import { CoreLinkEntity } from '../persistance/models/coreLinkEntity';
 import { CoreLinkService } from '../services/coreLinkService';
@@ -12,6 +12,10 @@ export class ViewController {
 
     app.get('/', (_, res: Response) => {
       res.render('home', enrichViewData({}));
+    });
+
+    app.get('/create-instructions', (_, res: Response) => {
+      res.render('create-instructions', enrichViewData({}));
     });
 
     app.get('/create', (_, res: Response, next: NextFunction) => {
@@ -41,7 +45,7 @@ export class ViewController {
 
     app.get(
       '/view/:guid',
-      async (req: Request, res: Response, next: NextFunction) => {
+      (req: Request, res: Response, next: NextFunction) => {
         const guid = req.params['guid'];
         service
           .get(guid, getCookie(req, guid), false, true)
@@ -109,6 +113,10 @@ export class ViewController {
           .catch(next);
       }
     );
+
+    // app.use('/docs', swaggerUi.serve, async (req: Request, res: Response) => {
+    //   res.send(swaggerUi.generateHTML(apiDef));
+    // });
 
     app.use((req: Request, res: Response, next: NextFunction) => {
       throw new PathFoundError(req.path);

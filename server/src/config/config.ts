@@ -3,7 +3,7 @@
 import dotenv from 'dotenv';
 import { CoreLinkCreate } from '../services/coreLinkService';
 
-dotenv.config({ path: ['.env.local', '.env.base'] });
+dotenv.config({ path: ['.env.prod','.env.local', '.env.base'] });
 
 function getRaw() {
   const conf = {

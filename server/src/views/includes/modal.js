@@ -57,6 +57,8 @@ function searchFinished(next) {
   }
 }
 
+let [leftChilds, rightChilds] = [[], []];
+let [leftHeightRatio, rightHeightRatio] = [0, 0];
 function searchTenor(nextStr) {
   const value = document.querySelector(`#gif-search`).value;
   if (value) {
@@ -64,21 +66,22 @@ function searchTenor(nextStr) {
     const url = !nextStr
       ? `/api/tenor/search?str=${value}`
       : `/api/tenor/search?str=${value}&next=${nextStr}`;
+
     httpGet(url)
       .then(({ list, next }) => {
-        console.log('results', next, list);
-        const newChilds = list.map((entry) => {
-          const img = document.createElement('img');
-          img.src = entry.nanoUrl;
-          img.onclick = function () {
-            selectGif(entry.url);
-          };
-          img.classList =
-            'w-100 border border-dark border-secondary border-2 rounded-4 my-1';
-          return img;
-        });
-        const leftChilds = newChilds.filter((c, ind) => (ind + 1) % 2);
-        const rightChilds = newChilds.filter((c, ind) => ind % 2);
+        if (!nextStr) {
+          [leftChilds, rightChilds] = [[], []];
+          [leftHeightRatio, rightHeightRatio] = [0, 0];
+        }
+        for (const item of list) {
+          if (leftHeightRatio < rightHeightRatio) {
+            leftChilds.push(createImage(item));
+            leftHeightRatio += item.height2Width;
+          } else {
+            rightChilds.push(createImage(item));
+            rightHeightRatio += item.height2Width;
+          }
+        }
         if (!nextStr) {
           gifContainerElLeft.replaceChildren(...leftChilds);
           gifContainerElRight.replaceChildren(...rightChilds);
@@ -94,6 +97,16 @@ function searchTenor(nextStr) {
   }
 }
 
+function createImage(entry) {
+  const img = document.createElement('img');
+  img.src = entry.nanoUrl;
+  img.onclick = function () {
+    selectGif(entry.url);
+  };
+  img.classList = 'w-100 border border-light-subtle border-3 rounded-3';
+  return img;
+}
+
 function nextTenor() {
   searchTenor(nextStr);
 }
@@ -103,7 +116,7 @@ function initTenor() {
 }
 
 function selectGif(url) {
-  console.log('select', url);
+  // console.log('select', url);
   const el = document.querySelector(`#imageUrl`);
   el.value = url;
   // el.setAttribute('disabled', 'disabled');

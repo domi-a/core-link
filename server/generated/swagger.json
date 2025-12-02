@@ -15,7 +15,9 @@
 		"license": {
 			"name": "ISC"
 		},
-		"contact": {}
+		"contact": {
+			"name": "domi"
+		}
 	},
 	"paths": {
 		"/api/tenor/search": {
@@ -31,17 +33,17 @@
 										"list": {
 											"items": {
 												"properties": {
-													"url70Per": {},
-													"url8Per": {},
-													"url2Per": {},
 													"url": {},
+													"mediumUrl": {},
+													"tinyUrl": {},
+													"nanoUrl": {},
 													"id": {}
 												},
 												"required": [
-													"url70Per",
-													"url8Per",
-													"url2Per",
 													"url",
+													"mediumUrl",
+													"tinyUrl",
+													"nanoUrl",
 													"id"
 												],
 												"type": "object"

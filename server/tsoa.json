@@ -1,18 +1,14 @@
 {
   "noImplicitAdditionalProperties": "throw-on-extras",
-  "controllerPathGlobs": [
-      "src/controllers/*Controller.ts"
-  ],
+  "controllerPathGlobs": ["src/controllers/*Controller.ts"],
   "spec": {
-      "outputDirectory": "generated",
-      "specVersion": 3,
-      "host": "localhost:3000",
-      "schemes": [
-          "http"
-      ]
+    "outputDirectory": "generated",
+    "specVersion": 3,
+    "host": "localhost:3000",
+    "schemes": ["http"]
   },
   "routes": {
-      "routesDir": "generated",
-      "iocModule": "src/ioc"
+    "routesDir": "generated",
+    "iocModule": "src/config/ioc"
   }
 }

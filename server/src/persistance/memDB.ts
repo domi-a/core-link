@@ -2,7 +2,7 @@
 
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
-import { iocContainer } from '../ioc';
+import { iocContainer } from '../config/ioc';
 import { CoreLinkRepository } from './coreLinkRepo';
 import { CoreLinkEntity } from './models/coreLinkEntity';
 

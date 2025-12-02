@@ -1,7 +1,7 @@
 /** @format */
 
 import { config } from '../config/config';
-import { iocContainer } from '../ioc';
+import { iocContainer } from '../config/ioc';
 import { RightsError } from '../middlewares/errorHandler';
 import { CoreLinkRepository } from '../persistance/coreLinkRepo';
 import { CoreLinkEntity } from '../persistance/models/coreLinkEntity';
