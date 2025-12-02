@@ -66,7 +66,6 @@ function searchTenor(nextStr) {
     const url = !nextStr
       ? `/api/tenor/search?str=${value}`
       : `/api/tenor/search?str=${value}&next=${nextStr}`;
-
     httpGet(url)
       .then(({ list, next }) => {
         if (!nextStr) {

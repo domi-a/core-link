@@ -10,20 +10,22 @@ div
         button(class="input-group-text" type="button" onclick='copy()')="copy"
       ul
         li='copy url above'
-        li launch 'nfc tools' on your phone <a href='https://play.google.com/store/apps/details?id=com.wakdev.wdnfc' target='blank'>android</a> / <a href='https://apps.apple.com/us/app/nfc-tools/id1252962749' target='blank'>iphone</a>
+        li launch 'nfc tools' on your phone <a href='https://play.google.com/store/apps/details?id=com.wakdev.wdnfc' target='_blank'>android</a> / <a href='https://apps.apple.com/us/app/nfc-tools/id1252962749' target='_blank'>iphone</a>
         li='add custom-url data set in write section'
         li='paste url'
         li='activate write mode'
         li=`touch NFC-${data.appTitle}-item with center back of phone (most android) or top side (iphone)`       
 
-    h2(class='d-flex justify-content-center align-items-center flex-wrap')
+    h2(class='d-flex justify-content-center align-items-center flex-wrap mb-4')
       span(class="flex-wrap text-center")
         span(class="px-1 fs-4 text-secondary mt-auto")='from' 
         span(class="px-1 fs-1 text-center")=data.from
       span(class="flex-wrap text-center")
         span(class="px-1 fs-4 text-secondary mt-auto ")='to' 
         span(class="px-1 fs-1 text-center")=data.to
-    h3(class='d-flex justify-content-around align-items-center pt-4')=data.text
+    div(class='fs-3 fw-medium d-flex align-items-center justify-content-around')
+      div(class="text-center" style="white-space: pre-line")!=data.textEnriched
+
   if data.imageUrl
     img(
         src=data.imageUrl

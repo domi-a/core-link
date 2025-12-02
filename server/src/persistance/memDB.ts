@@ -44,22 +44,22 @@ date.setDate(date.getDate() + 30);
 const seeds: CoreLinkEntity[] = [
   new CoreLinkEntity({
     guid: '111',
-    from: 'CoreLink1',
-    to: 'john doe',
-    fixatedTill: date,
-    text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.',
+    from: 'john doe',
+    to: 'jane doe',
+    fixatedTill: undefined,
+    text: "hi jane.\rjust wanted to say: i'm happy that you are there.\r\nhope to code with you again soon.\rcheckout our topic on google.com or http://google.org or https://google.de",
     imageUrl:
-      'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZzYxb2U5ZHQzMXVrbTk4YmlwNzFxMmt4ZnU1Zzd1YmxzMzZ0djN5ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/EOILoGqhsYt3t2U28a/giphy.gif',
+      'https://media.tenor.com/5Pdhkfq8xYEAAAAC/spongebob-cant-wait.gif',
     secret: null,
     reads: null,
     writes: null,
   }),
   new CoreLinkEntity({
     guid: '222',
-    from: 'CoreLink2',
-    to: 'CyberGirl',
+    from: 'CoreLink',
+    to: 'creator',
     fixatedTill: undefined,
-    text: 'Lorem ipsum dolor sit amet',
+    text: "Lorem ❤️ipsum dolor🫴 sit amet🤣 <script>console.log('!! danger zone !!')</script> sadf 👊",
     imageUrl:
       'https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExOGhiaHNrNm85dHMzbnAwcmVjZTRqbmVrMGg5ODVjemFydmQ5eWlqeSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/OfkGZ5H2H3f8Y/giphy.gif',
     secret: '123',

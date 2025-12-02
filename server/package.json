@@ -15,12 +15,14 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@types/xss-filters": "^1.2.0",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "monguito": "^6.1.3",
     "pug": "^3.0.3",
     "tenor-gif-api": "^1.0.3",
-    "tsoa": "^6.6.0"
+    "tsoa": "^6.6.0",
+    "xss-filters": "^1.2.7"
   },
   "devDependencies": {
     "@types/ejs": "^3.1.5",

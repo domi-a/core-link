@@ -33,6 +33,10 @@
 										"list": {
 											"items": {
 												"properties": {
+													"height2Width": {
+														"type": "number",
+														"format": "double"
+													},
 													"url": {},
 													"mediumUrl": {},
 													"tinyUrl": {},
@@ -40,6 +44,7 @@
 													"id": {}
 												},
 												"required": [
+													"height2Width",
 													"url",
 													"mediumUrl",
 													"tinyUrl",

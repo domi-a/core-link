@@ -5,7 +5,6 @@ import { iocContainer } from '../config/ioc';
 import { RightsError } from '../middlewares/errorHandler';
 import { CoreLinkRepository } from '../persistance/coreLinkRepo';
 import { CoreLinkEntity } from '../persistance/models/coreLinkEntity';
-
 export class CoreLinkService {
   repo: CoreLinkRepository =
     iocContainer.get<CoreLinkRepository>(CoreLinkRepository);
@@ -18,7 +17,7 @@ export class CoreLinkService {
     return this.repo
       .get(id, readIncrement)
       .then((d) => {
-        return getReadData(d, secret);
+        return getEnrichedReadData(d, secret);
       })
       .then((d) => {
         if (!rightsCheck) {
@@ -37,14 +36,14 @@ export class CoreLinkService {
           ...params,
           guid: crypto.randomUUID(),
           secret: crypto.randomUUID(),
-          ...getAdditionalWriteData(params),
+          ...getEnrichedWriteData(params),
           reads: 0,
           writes: 0,
         })
       )
       .then((d) => {
         return {
-          ...getReadData(d),
+          ...getEnrichedReadData(d),
           ...getViewUrl(d.guid),
           unlockAllowed: true,
         };
@@ -60,22 +59,22 @@ export class CoreLinkService {
       return this.repo
         .patch(guid, {
           ...params,
-          ...getAdditionalWriteData(params),
+          ...getEnrichedWriteData(params),
           secret: crypto.randomUUID(), //use new new secret on update
         })
         .then((d) => {
-          return { ...getReadData(d, secret), unlockAllowed: true };
+          return { ...getEnrichedReadData(d, secret), unlockAllowed: true };
         });
     });
   }
 
   public unlock(guid: string, secret: string | undefined, force?: boolean) {
     if (force) {
-      return this.repo.unlock(guid);
+      return this.repo.unlock(guid).then(getEnrichedReadData);
     } else {
       return this.repo.get(guid).then((d) => {
         if (unlockAllowed(d, secret)) {
-          return this.repo.unlock(guid);
+          return this.repo.unlock(guid).then(getEnrichedReadData);
         } else {
           throw new RightsError(guid);
         }
@@ -110,7 +109,8 @@ function unlockAllowed(
   }
   return browserSecret ? browserSecret === data.secret : false;
 }
-function getReadData(data: CoreLinkEntity, secret?: string) {
+
+function getEnrichedReadData(data: CoreLinkEntity, secret?: string) {
   const fixatedTillStr = new Intl.DateTimeFormat('de-DE', {
     dateStyle: 'short',
     timeStyle: 'short',
@@ -120,9 +120,11 @@ function getReadData(data: CoreLinkEntity, secret?: string) {
     locked: isLocked(data),
     unlockAllowed: unlockAllowed(data, secret),
     fixatedTillStr,
+    textEnriched: convertUrls(data.text),
   };
 }
-function getAdditionalWriteData(params: CoreLinkCreate) {
+
+function getEnrichedWriteData(params: CoreLinkCreate) {
   return {
     fixatedTill: getDate(
       params.fixateForDays ? Number(params.fixateForDays) : undefined
@@ -140,8 +142,32 @@ export interface CoreLinkUpdate
   fixateForDays: string;
   imageUrl: string | null;
 }
+
 export interface CoreLinkCreate extends Omit<CoreLinkUpdate, 'secret'> {}
 
 function getViewUrl(guid: string) {
   return { url: `${config.viewHost}/view/${guid}` };
+}
+
+function convertUrls(str: string) {
+  const regex =
+    /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.(net|com|org|info|xyz|uk|de)\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gi;
+  return str.replaceAll(regex, (url, args) => {
+    if (url.startsWith('https://')) {
+      return url.replace(
+        url,
+        `<a href="${url}" target="_blank">${url.replace('https://', '')}</a>`
+      );
+    } else if (url.startsWith('http://')) {
+      return url.replace(
+        url,
+        `<a href="${url.replace('http:', 'https:')}" target="_blank">${url.replace('http://', '')}</a>`
+      );
+    } else {
+      return url.replace(
+        url,
+        `<a href="https://${url}" target="_blank">${url}</a>`
+      );
+    }
+  });
 }

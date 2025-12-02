@@ -2,6 +2,7 @@
 
 import { NextFunction, Request, Response } from 'express';
 import { ValidateError } from 'tsoa';
+import { inHTMLData } from 'xss-filters';
 import { config } from '../config/config';
 import { enrichViewData } from '../controllers/viewController';
 export class EntryNotFoundError extends Error {
@@ -75,7 +76,19 @@ export function viewErrorHandler(
   }
   next();
 }
-
+export function sanitizeBody(req: Request, res: Response, next: NextFunction) {
+  const sanitBody = {} as any;
+  if (!req.body) {
+    next();
+  } else {
+    Object.entries(req.body).forEach(([key, value]) => {
+      sanitBody[key] = inHTMLData(value as string);
+    });
+    req.body = sanitBody;
+    next();
+  }
+  //    <script>console.log('!! danger zone !!')</script>
+}
 export function apiErrorHandler(
   err: AppError,
   req: Request,

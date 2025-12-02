@@ -7,7 +7,7 @@ export class CoreLinkEntity implements Entity {
   guid: string;
   from: string;
   to: string;
-  text: string | undefined;
+  text: string;
   fixatedTill: Date | undefined;
   imageUrl: string | null;
   secret: string | null;

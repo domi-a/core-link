@@ -6,7 +6,11 @@ import { RegisterRoutes } from '../generated/routes';
 import { config } from './config/config';
 import { initDependencies } from './config/setup';
 import { ViewController } from './controllers/viewController';
-import { apiErrorHandler, viewErrorHandler } from './middlewares/errorHandler';
+import {
+  apiErrorHandler,
+  sanitizeBody,
+  viewErrorHandler,
+} from './middlewares/errorHandler';
 
 initDependencies().then(() => initApp());
 
@@ -18,7 +22,7 @@ function initApp() {
   app.use(json());
   app.use(express.urlencoded({ extended: true }));
   RegisterRoutes(app);
-
+  app.use(sanitizeBody);
   app.use(apiErrorHandler);
   // views
   app.set('view engine', 'pug');

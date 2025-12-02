@@ -9,18 +9,15 @@ div(class="p-4 m-2 form-control-lg")
         button(class="input-group-text" type="button" onclick="eraseValue('#to')" style="color: transparent;text-shadow: 0 0 0 black;")="❌"
     div(class="mb-4")
         label(for="text" class="form-label")='message'
-        textarea(id="text" class="form-control " type="text" name="text" required maxlength="2048" style="min-height: 10rem;")=data.text
+        textarea(id="text" class="form-control " type="text" name="text" required maxlength="2048" style="min-height: 10rem; field-sizing: content" )=data.text
     div(class="mb-5")   
         label(for="gif-search" class="form-label")="image (optional)"
         div(class="mb-4 d-flex justify-content-center align-items-center")
             button(class="btn btn-dark btn-lg flex-fill" type="button" onclick="openGifModal()" id="gif-search")="find gifs in tenor"
-        //- div(class="input-group flex-nowrap mb-3")
-            //- input(id="search-str" class="form-control" type="text" maxlength="32" aria-describedby="search-label" placeholder="search tenor")
         div(class="input-group flex-nowrap")
             span(class="input-group-text" id="imageInfo")='url'
             input(id="imageUrl" class="form-control" type="text" name="imageUrl" aria-describedby="imageInfo" maxlength="1024" value=data.imageUrl)
             button(class="input-group-text" type="button" onclick="eraseValue('#imageUrl')" style="color: transparent;text-shadow: 0 0 0 black;")="❌"
-        //- div(id="imageInfo" class="form-text") intended to use urls from <a href='https://giphy.com' target='blank'>giphy.com</a>  - use the <strong>Copy GIF Link</strong> button behind the message icon and paste url here. can be any image url that allowes to be cross site loaded.
     div(class="mb-5")
         label(for="fixateForDays" class="form-label")='content lock'
         ul(class="fs-6 text")
