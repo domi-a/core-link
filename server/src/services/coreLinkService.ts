@@ -1,5 +1,6 @@
 /** @format */
 
+import { version } from '../../package.json';
 import { config } from '../config/config';
 import { iocContainer } from '../config/ioc';
 import { RightsError } from '../middlewares/errorHandler';
@@ -120,7 +121,8 @@ function getEnrichedReadData(data: CoreLinkEntity, secret?: string) {
     locked: isLocked(data),
     unlockAllowed: unlockAllowed(data, secret),
     fixatedTillStr,
-    textEnriched: convertUrls(data.text),
+    textEnriched: convertSpecialStrings(data.text),
+    version: version,
   };
 }
 
@@ -149,10 +151,19 @@ function getViewUrl(guid: string) {
   return { url: `${config.viewHost}/view/${guid}` };
 }
 
-function convertUrls(str: string) {
+function convertSpecialStrings(text: string) {
+  text = convertUrls(text);
+  text = convertSingleLineEmojis(text);
+  text = convertFontStyle(text, '*', 'fw-bold', 'span');
+  text = convertFontStyle(text, '_', '', 'em');
+  text = convertFontStyle(text, '~', '', 's');
+  return text;
+}
+
+function convertUrls(text: string) {
   const regex =
     /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.(net|com|org|info|xyz|uk|de)\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gi;
-  return str.replaceAll(regex, (url, args) => {
+  return text.replaceAll(regex, (url, args) => {
     if (url.startsWith('https://')) {
       return url.replace(
         url,
@@ -169,5 +180,29 @@ function convertUrls(str: string) {
         `<a href="https://${url}" target="_blank">${url}</a>`
       );
     }
+  });
+}
+
+function convertSingleLineEmojis(text: string) {
+  const regex =
+    /(\n|\r|\r\n)\s*([\u2000-\u3300][\u2000-\uff00]|[\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])\s*(\n|\r|\r\n)/gm;
+  return text.replaceAll(regex, (found, args) => {
+    return (
+      '<p style="font-size:3rem;">' +
+      found.replaceAll('\r', '').replaceAll('\n', '').replaceAll(' ', '') +
+      '</p>'
+    );
+  });
+}
+
+function convertFontStyle(
+  text: string,
+  charToRep: string,
+  addClass: string,
+  tagSourround: string
+) {
+  const regex = new RegExp(`\\s\\${charToRep}([A-z])*\\${charToRep}\\s`, 'gim');
+  return text.replaceAll(regex, (found, args) => {
+    return ` <${tagSourround} class="${addClass}">${found.replace(found, found.replace(` ${charToRep}`, '').replace(`${charToRep} `, ''))}</${tagSourround}> `;
   });
 }

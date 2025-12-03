@@ -59,7 +59,7 @@ const seeds: CoreLinkEntity[] = [
     from: 'CoreLink',
     to: 'creator',
     fixatedTill: undefined,
-    text: "Lorem ❤️ipsum dolor🫴 sit amet🤣 <script>console.log('!! danger zone !!')</script> sadf 👊",
+    text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut 👌 labore et dolore magna aliquyam erat, sed diam voluptua.  sdfsdf\r\n ❤️ \r\nasdas google.de end *strong* > _italic_ asdasda ~stroked~ asd',
     imageUrl:
       'https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExOGhiaHNrNm85dHMzbnAwcmVjZTRqbmVrMGg5ODVjemFydmQ5eWlqeSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/OfkGZ5H2H3f8Y/giphy.gif',
     secret: '123',

@@ -23,7 +23,7 @@ div
       span(class="flex-wrap text-center")
         span(class="px-1 fs-4 text-secondary mt-auto ")='to' 
         span(class="px-1 fs-1 text-center")=data.to
-    div(class='fs-3 fw-medium d-flex align-items-center justify-content-around')
+    div(class='fs-3 fw-normal d-flex align-items-center justify-content-around')
       div(class="text-center" style="white-space: pre-line")!=data.textEnriched
 
   if data.imageUrl
@@ -34,6 +34,6 @@ div
   //- div(class="m-2 d-flex fst-italic opacity-25")
   //-   span(class="flex-grow-1")=`views: ${data.reads}`
   //-   span(class="")=`changes: ${data.writes}`        
-  include includes/footer.pug
+include includes/footer.pug
 script
   include includes/script.js
