@@ -34,7 +34,7 @@ function convertUrls(text: string) {
     /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.(net|com|org|info|xyz|uk|de)\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/gi;
   return text.replaceAll(regex, (url, args) => {
     const nonProtoUrl = url.replace('https://', '').replace('http://', '');
-    return `<a href="https://${nonProtoUrl}" target="_blank" class="link-secondary link-underline-opacity-50">${nonProtoUrl}</a>`;
+    return `<a href="https://${nonProtoUrl}" target="_blank">${nonProtoUrl}</a>`;
   });
 }
 

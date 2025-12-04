@@ -25,7 +25,7 @@ before producing hardware items you need nfc-tags. cheap ones that are known to 
 
 ### print coins
 
-- used font is not free for commercial use! (sf viper squadron)[https://www.1001fonts.com/viper-squadron-font.html#license]
+- used font is not free for commercial use! [sf viper squadron](https://www.1001fonts.com/viper-squadron-font.html#license)
 - icons are standard unicode emojis
 - rest of models is by me
 - [orca project](./misc/3dprint/print.3mf) (for round 25mm nfg-tags)
