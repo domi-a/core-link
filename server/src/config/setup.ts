@@ -29,7 +29,7 @@ export function registerIocDependencies() {
       }
     }
   );
-  console.log('ioc ready');
+  // console.log('ioc ready');
 }
 
 function initDb() {
@@ -37,11 +37,6 @@ function initDb() {
     return MongoDBMemoryServer.initMemDB().then(({ close }) => {
       dbClose = close;
       MongoDBMemoryServer.seed();
-      console.log(
-        'example entrys',
-        `http://localhost:${config.port}/view/111`,
-        `http://localhost:${config.port}/view/222`
-      );
     });
   } else {
     return MongoDB.initDB(config.dbConnection).then(({ close }) => {

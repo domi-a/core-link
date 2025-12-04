@@ -3,8 +3,9 @@
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
 import { iocContainer } from '../config/ioc';
+import { getDateInDays, getViewUrl } from '../utils';
 import { CoreLinkRepository } from './coreLinkRepo';
-import { CoreLinkEntity } from './models/coreLinkEntity';
+import { blankPlaceHolder, CoreLinkEntity } from './models/coreLinkEntity';
 
 export class MongoDBMemoryServer {
   static mongoServer: MongoMemoryServer | undefined;
@@ -32,15 +33,14 @@ export class MongoDBMemoryServer {
       for (const seed of seeds) {
         await repo.save(seed);
       }
-      // console.log(
-      //   'seeded to Memory DB',
-      //   JSON.stringify(await repo.findAll(), null, 2)
-      // );
+      console.log(
+        'seeded entries - try with',
+        seeds.map((s) => getViewUrl(s.guid))
+      );
     }
   };
 }
-const date = new Date();
-date.setDate(date.getDate() + 30);
+
 const seeds: CoreLinkEntity[] = [
   new CoreLinkEntity({
     guid: '111',
@@ -58,12 +58,23 @@ const seeds: CoreLinkEntity[] = [
     guid: '222',
     from: 'CoreLink',
     to: 'creator',
-    fixatedTill: undefined,
+    fixatedTill: getDateInDays(30),
     text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut 👌 labore et dolore magna aliquyam erat, sed diam voluptua.  sdfsdf\r\n ❤️ \r\nasdas google.de end *strong* > _italic_ asdasda ~stroked~ asd',
     imageUrl:
       'https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExOGhiaHNrNm85dHMzbnAwcmVjZTRqbmVrMGg5ODVjemFydmQ5eWlqeSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/OfkGZ5H2H3f8Y/giphy.gif',
     secret: '123',
     reads: 10,
     writes: 10,
+  }),
+  new CoreLinkEntity({
+    guid: '333',
+    from: blankPlaceHolder,
+    to: blankPlaceHolder,
+    fixatedTill: undefined,
+    text: 'Thu Dec 04 2025 18:11:46 GMT+0100 (Mitteleuropäische Normalzeit)',
+    imageUrl: null,
+    secret: '567',
+    reads: null,
+    writes: null,
   }),
 ];

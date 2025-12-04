@@ -4,8 +4,11 @@ import { version } from '../../package.json';
 import { config } from '../config/config';
 import { iocContainer } from '../config/ioc';
 import { PathFoundError } from '../middlewares/errorHandler';
-import { CoreLinkEntity } from '../persistance/models/coreLinkEntity';
-import { blankPlaceHolder, CoreLinkService } from '../services/coreLinkService';
+import {
+  blankPlaceHolder,
+  CoreLinkEntity,
+} from '../persistance/models/coreLinkEntity';
+import { CoreLinkService } from '../services/coreLinkService';
 import { convertSpecialStrings, toGerDateStr } from '../utils';
 
 export class ViewController {
@@ -58,18 +61,18 @@ export class ViewController {
       }
     );
 
-    app.get(
-      '/view/:guid/unlock',
-      (req: Request, res: Response, next: NextFunction) => {
-        const guid = req.params['guid'];
-        service
-          .unlock(guid, undefined, true)
-          .then((data) => {
-            res.redirect(`/view/${guid}`);
-          })
-          .catch(next);
-      }
-    );
+    // app.get(
+    //   '/view/:guid/unlock',
+    //   (req: Request, res: Response, next: NextFunction) => {
+    //     const guid = req.params['guid'];
+    //     service
+    //       .unlock(guid, undefined, true)
+    //       .then((data) => {
+    //         res.redirect(`/view/${guid}`);
+    //       })
+    //       .catch(next);
+    //   }
+    // );
 
     app.get(
       '/unlock/:guid',

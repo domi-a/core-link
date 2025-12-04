@@ -43,3 +43,4 @@ export const CoreLinkSchema = extendSchema(
     timestamps: true,
   }
 );
+export const blankPlaceHolder = '#*#'; //do not change after writing with it to DB

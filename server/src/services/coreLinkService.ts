@@ -3,7 +3,10 @@
 import { iocContainer } from '../config/ioc';
 import { RightsError } from '../middlewares/errorHandler';
 import { CoreLinkRepository } from '../persistance/coreLinkRepo';
-import { CoreLinkEntity } from '../persistance/models/coreLinkEntity';
+import {
+  blankPlaceHolder,
+  CoreLinkEntity,
+} from '../persistance/models/coreLinkEntity';
 import { getDateInDays, getViewUrl, toGerDateStr } from '../utils';
 export class CoreLinkService {
   repo: CoreLinkRepository =
@@ -88,7 +91,7 @@ export class CoreLinkService {
     }
   }
 }
-export const blankPlaceHolder = '*';
+
 function isLocked(data: CoreLinkEntity | null) {
   if (!data) return;
   if (!data.fixatedTill) return false;
