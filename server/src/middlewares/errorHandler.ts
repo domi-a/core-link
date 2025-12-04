@@ -1,7 +1,7 @@
 /** @format */
 
 import { NextFunction, Request, Response } from 'express';
-import { ValidateError } from 'tsoa';
+import { ValidationException } from 'monguito';
 import { inHTMLData } from 'xss-filters';
 import { config } from '../config/config';
 import { enrichViewData } from '../controllers/viewController';
@@ -54,10 +54,10 @@ export function viewErrorHandler(
     logViewError(req, '403');
     res.status(403);
     res.render('error', enrichViewData({ error: 403 }));
-  } else if (err instanceof ValidateError) {
-    logViewError(req, '400');
+  } else if (err instanceof ValidationException) {
+    logViewError(req, '400', message);
     res.status(400);
-    res.render('error', enrichViewData({ error: 400 }));
+    res.render('error', enrichViewData({ error: 400, message }));
   } else if (Array.isArray(err.code) && err.code?.includes('PUG:')) {
     const internalErr = JSON.stringify({ ...err, filename: undefined });
     logViewError(req, 'pug', internalErr);
@@ -106,11 +106,11 @@ export function apiErrorHandler(
       res.status(403).json({
         message: err.message,
       });
-    } else if (err instanceof ValidateError) {
-      logApiError(req, '422 validation', JSON.stringify(err?.fields));
+    } else if (err instanceof ValidationException) {
+      logApiError(req, '422 validation', JSON.stringify(err?.message));
       res.status(422).json({
         message: 'Validation Failed',
-        details: err?.fields,
+        details: err?.message,
       });
     } else if (err instanceof Error) {
       logApiError(

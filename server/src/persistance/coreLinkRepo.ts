@@ -1,9 +1,9 @@
 /** @format */
 
-import { BaseSchema, extendSchema, MongooseRepository } from 'monguito';
+import { MongooseRepository } from 'monguito';
 import { EntryNotFoundError } from '../middlewares/errorHandler';
 import { CoreLinkUpdate } from '../services/coreLinkService';
-import { CoreLinkEntity } from './models/coreLinkEntity';
+import { CoreLinkEntity, CoreLinkSchema } from './models/coreLinkEntity';
 
 export class CoreLinkRepository extends MongooseRepository<CoreLinkEntity> {
   constructor() {
@@ -12,6 +12,7 @@ export class CoreLinkRepository extends MongooseRepository<CoreLinkEntity> {
       schema: CoreLinkSchema,
     });
   }
+
   async get(guid: string, incrementRead?: boolean) {
     const bla = !incrementRead
       ? this.entityModel.findOne({ guid })
@@ -51,22 +52,3 @@ export class CoreLinkRepository extends MongooseRepository<CoreLinkEntity> {
       });
   }
 }
-
-const CoreLinkSchema = extendSchema(
-  BaseSchema,
-  {
-    guid: { type: String, required: true },
-    from: { type: String, required: true },
-    to: { type: String, required: true },
-    fixatedTill: { type: Date, required: false },
-    text: { type: String, required: false },
-    imageUrl: { type: String, required: false },
-    secret: { type: String, required: false },
-    reads: { type: Number, required: false },
-    writes: { type: Number, required: false },
-  },
-  {
-    timestamps: true,
-    // collection: 'kudosentities',corelinkentities
-  }
-);

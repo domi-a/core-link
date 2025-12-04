@@ -99,11 +99,14 @@ function searchTenor(nextStr) {
 function createImage(entry) {
   const img = document.createElement('img');
   img.src = entry.nanoUrl;
-  img.onclick = function () {
+  img.classList = 'w-100 border border-light-subtle border-3 rounded-3';
+  const a = document.createElement('a');
+  a.classList = 'w-100';
+  a.onclick = function () {
     selectGif(entry.url);
   };
-  img.classList = 'w-100 border border-light-subtle border-3 rounded-3';
-  return img;
+  a.appendChild(img);
+  return a;
 }
 
 function nextTenor() {
@@ -118,6 +121,5 @@ function selectGif(url) {
   // console.log('select', url);
   const el = document.querySelector(`#imageUrl`);
   el.value = url;
-  // el.setAttribute('disabled', 'disabled');
   modal.hide();
 }

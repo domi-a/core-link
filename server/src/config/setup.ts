@@ -49,6 +49,7 @@ function initDb() {
     });
   }
 }
+
 function listenOnExit() {
   process.on('exit', function () {
     dbClose();

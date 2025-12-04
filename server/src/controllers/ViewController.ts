@@ -1,10 +1,12 @@
 /** @format */
 import { Express, NextFunction, Request, Response } from 'express';
+import { version } from '../../package.json';
 import { config } from '../config/config';
 import { iocContainer } from '../config/ioc';
 import { PathFoundError } from '../middlewares/errorHandler';
 import { CoreLinkEntity } from '../persistance/models/coreLinkEntity';
-import { CoreLinkService } from '../services/coreLinkService';
+import { blankPlaceHolder, CoreLinkService } from '../services/coreLinkService';
+import { convertSpecialStrings, toGerDateStr } from '../utils';
 
 export class ViewController {
   constructor(protected app: Express) {
@@ -119,7 +121,9 @@ export class ViewController {
     // });
 
     app.use((req: Request, res: Response, next: NextFunction) => {
-      throw new PathFoundError(req.path);
+      if (req.path !== '/.well-known/appspecific/com.chrome.devtools.json') {
+        throw new PathFoundError(req.path);
+      }
     });
   }
 }
@@ -129,22 +133,43 @@ export function getCookie(req: Request, name: string) {
   const cookies = new Map();
   if (cook) {
     cook.forEach((c) => {
-      const aa = c.split('=');
-      cookies.set(aa[0], aa[1]);
+      const [key, value] = c.split('=');
+      cookies.set(key, value);
     });
     return cookies.get(name);
   } else return undefined;
 }
 
-export function enrichViewData<T>(datas: ViewInput): ViewOutput {
+export function enrichViewData<T>(inData: ViewInput): ViewOutput {
   const additionalData: GlobalExtra = { appTitle: config.appTitle };
-  return { data: { ...datas, ...additionalData } };
+  if (
+    inData.from === blankPlaceHolder &&
+    inData.to === blankPlaceHolder &&
+    inData.text
+  ) {
+    const date = new Date(inData.text);
+    const dateTxt = 'created: ' + toGerDateStr(date, true) + '\r\n';
+    inData = {
+      ...inData,
+      ...config.defaultEntry,
+      text: dateTxt + config.defaultEntry.text,
+    };
+  }
+  return {
+    data: {
+      ...inData,
+      ...additionalData,
+      textEnriched: convertSpecialStrings(inData.text),
+      version: version,
+    },
+  };
 }
+
 interface GlobalExtra {
   appTitle: string;
 }
 interface UnknownData {
   [key: string]: Object | null | undefined;
 }
-type ViewInput = Partial<CoreLinkEntity> | Partial<UnknownData>;
+interface ViewInput extends Partial<CoreLinkEntity>, Partial<UnknownData> {}
 type ViewOutput = { data: GlobalExtra & ViewInput };

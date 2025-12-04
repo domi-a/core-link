@@ -3,7 +3,7 @@
 import dotenv from 'dotenv';
 import { CoreLinkCreate } from '../services/coreLinkService';
 
-dotenv.config({ path: ['.env.prod','.env.local', '.env.base'] });
+dotenv.config({ path: ['.env.prod', '.env.local', '.env.base'] });
 
 function getRaw() {
   const conf = {
@@ -60,4 +60,3 @@ interface Config {
   defaultEntry: Omit<CoreLinkCreate, 'fixateForDays'>;
 }
 export const config = getConfig();
-// export default getConfig()
