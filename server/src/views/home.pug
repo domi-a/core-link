@@ -3,22 +3,31 @@ include includes/menu.pug
 
 div(class="fs-3 p-4")
     h1=`what is ${data.appTitle} ?`
-    h2(class="mb-4 fs-4")='intended to connect a hardware gift with a virtual message / gift card - and also meant to be reused'
-    p(class="mb-4")="instead of only saying it or writing \"thank you\" or \"respect\" or sth on a sheet of paper > use a valueable hardware thing + a personal message with animated picture"
+    h2(class="mb-2 fs-4")='intended to connect a hardware gift with a virtual message / gift card - and also meant to be reused'
+    p(class="mb-5")="instead of only saying it or writing \"thank you\" or \"respect\" or sth on a sheet of paper > use a valueable hardware thing + a personal message with animated picture"
     
-    h1=`how to use ?`
+    h2=`how to use ?`
     p(class="mb-2")="you received one: be proud of a message you received"
-    p(class="mb-4")="you wanna give one or repurpose yours: change content and give away. content changing does not need to rescan nfc hardware. previous content will be overwritten"
+    p(class="mb-5")="you wanna give one or repurpose yours: change content and give away. content changing does not need to rescan nfc hardware. previous content will be overwritten"
     
-    h1=`how does it work ?`
-    p(class="mb-6")="the hardware is a 3d printed coin like thing with a integrated nfc-tag. This tag stores the link for the web system. each link i a hardware is unique. the content is only stored inside the web-service. urls are unique and can not be quessed nor are they publicly listed. just as private a shared photo album link"
+    h2 message content 
+
+    ul(class="mb-5")="basic formatting"
+        li google.com-><a href="">google.com</a>
+        li <span style="white-space: pre-wrap"><mark> *strong* </mark></span>-><span class="fw-bold">strong</span>
+        li <span style="white-space: pre-wrap"><mark> _italic_ </mark></span>-><em>italic</em>
+        li <span style="white-space: pre-wrap"><mark> ~stroked~ </mark></span>-><s>stroked</s>
+        li lines with only one emoji will supersize the emoji
+
+    h2=`how does it work ?`
+    p(class="mb-5")="the hardware is a 3d printed coin like thing with a integrated nfc-tag. This tag stores the link for the web system. each link i a hardware is unique. the content is only stored inside the web-service. urls are unique and can not be quessed nor are they publicly listed. just as private a shared photo album link"
     //- h1=`create new ${data.appTitle} ?`
     //- p(class="mb-2")="planned: get models to print your own coin"
-    h1=`create new ${data.appTitle} with this service`
-    p(class="mb-2")=`reusing an existing ${data.appTitle} is just done by changing the content - this very content will be overwritten - do not create a new entry`
-    p(class="mb-4") if you wanna create your own hardware with using this service follow <a href="/create-instructions">follow theese instructions</a> to create a new entry
+    h2=`create new ${data.appTitle} with this service`
+    p(class="mb-2")=`reusing an existing ${data.appTitle} is just done by changing the content - old content will be overwritten - do not create a new entry`
+    p(class="mb-5") if you wanna create your own hardware with using this service follow <a href="/create-instructions">theese instructions</a> to create a new entry
     
-    h1=`host own service`
-    p(class="mb-4") this software is open source to enable others to host and run server software with an own instance of this web-service or extend/change it get it at <a href="https://github.com/domi-a/core-link" target="_blank">github</a>
+    h2=`host own service`
+    p(class="mb-5") this software is open source - enabling others to host and run this server software with an own instance of this web-service and/or extend/change it. get it at <a href="https://github.com/domi-a/core-link" target="_blank">github</a>
 
 include includes/footer.pug

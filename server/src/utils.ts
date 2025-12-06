@@ -4,10 +4,14 @@ import { config } from './config/config';
 
 /** @format */
 export function toGerDateStr(date?: Date, seconds = false) {
-  return new Intl.DateTimeFormat('de-DE', {
-    dateStyle: 'short',
-    timeStyle: seconds ? 'medium' : 'short',
-  }).format(date);
+  try {
+    return new Intl.DateTimeFormat('de-DE', {
+      dateStyle: 'short',
+      timeStyle: seconds ? 'medium' : 'short',
+    }).format(date);
+  } catch (e) {
+    return 'unknown date';
+  }
 }
 export function getViewUrl(guid: string) {
   return { url: `${config.viewHost}/view/${guid}` };
@@ -23,9 +27,9 @@ export function convertSpecialStrings(text: string | undefined) {
   if (!text) return '';
   text = convertUrls(text);
   text = convertSingleLineEmojis(text);
-  text = convertFontStyle(text, '*', 'fw-bold', 'span');
-  text = convertFontStyle(text, '_', '', 'em');
-  text = convertFontStyle(text, '~', '', 's');
+  text = convertFontStyle(text, '*', 'span', 'fw-bold');
+  text = convertFontStyle(text, '_', 'em', '');
+  text = convertFontStyle(text, '~', 's', '');
   return text;
 }
 
@@ -52,12 +56,12 @@ function convertSingleLineEmojis(text: string) {
 
 function convertFontStyle(
   text: string,
-  charToRep: string,
-  addClass: string,
-  tagSourround: string
+  escapeSeq: string,
+  tag: string,
+  addClass: string
 ) {
-  const regex = new RegExp(`\\s\\${charToRep}([A-z])*\\${charToRep}\\s`, 'gim');
+  const regex = new RegExp(`\\s\\${escapeSeq}([A-z])*\\${escapeSeq}\\s`, 'gim');
   return text.replaceAll(regex, (found, args) => {
-    return ` <${tagSourround} class="${addClass}">${found.replace(found, found.replace(` ${charToRep}`, '').replace(`${charToRep} `, ''))}</${tagSourround}> `;
+    return ` <${tag} class="${addClass}">${found.replace(found, found.replace(` ${escapeSeq}`, '').replace(`${escapeSeq} `, ''))}</${tag}> `;
   });
 }
