@@ -3,7 +3,7 @@ import { Express, NextFunction, Request, Response } from 'express';
 import { version } from '../../package.json';
 import { config } from '../config/config';
 import { iocContainer } from '../config/ioc';
-import { PathFoundError } from '../middlewares/errorHandler';
+import { PathFoundError, ViewError } from '../middlewares/errorHandler';
 import {
   blankPlaceHolder,
   CoreLinkEntity,
@@ -16,15 +16,15 @@ export class ViewController {
     const service = iocContainer.get<CoreLinkService>(CoreLinkService);
 
     app.get('/', (_, res: Response) => {
-      res.render('home', enrichViewData({}));
+      res.render('home', enrichViewData());
     });
 
     app.get('/create-instructions', (_, res: Response) => {
-      res.render('create-instructions', enrichViewData({}));
+      res.render('create-instructions', enrichViewData());
     });
 
     app.get('/create', (_, res: Response, next: NextFunction) => {
-      res.render('create', enrichViewData({}));
+      res.render('create', enrichViewData());
     });
 
     app.post('/create', (req: Request, res: Response, next: NextFunction) => {
@@ -94,7 +94,7 @@ export class ViewController {
         service
           .get(guid, getCookie(req, guid), true, false)
           .then((data) => {
-            res.render('edit', enrichViewData(data));
+            res.render('edit', enrichViewData(data, true));
           })
           .catch(next);
       }
@@ -143,36 +143,56 @@ export function getCookie(req: Request, name: string) {
   } else return undefined;
 }
 
-export function enrichViewData<T>(inData: ViewInput): ViewOutput {
-  const additionalData: GlobalExtra = { appTitle: config.appTitle };
-  if (
-    inData.from === blankPlaceHolder &&
-    inData.to === blankPlaceHolder &&
-    inData.text
-  ) {
-    const date = new Date(inData.text);
-    const dateTxt = 'created: ' + toGerDateStr(date, true) + '\r\n';
-    inData = {
-      ...inData,
-      ...config.defaultEntry,
-      text: dateTxt + config.defaultEntry.text,
-    };
+export function enrichViewData(
+  data?: CoreLinkEntity | ViewError,
+  removeExampleContent = false
+): {
+  data: ViewData;
+} {
+  const additionalData = { appTitle: config.appTitle, version };
+  if (data && 'error' in data) {
+    return { data: { ...data, ...additionalData } };
   }
-  return {
-    data: {
-      ...inData,
-      ...additionalData,
-      textEnriched: convertSpecialStrings(inData.text),
-      version: version,
-    },
-  };
+  if (data && 'guid' in data) {
+    if (
+      data.from === blankPlaceHolder &&
+      data.to === blankPlaceHolder &&
+      data.text
+    ) {
+      if (!removeExampleContent) {
+        //add data for blank enry
+        const dateTxt =
+          'created: ' + toGerDateStr(new Date(data.text), true) + '\r\n';
+        data = {
+          ...data,
+          ...config.defaultEntry,
+          text: dateTxt + config.defaultEntry.text,
+        };
+      } else {
+        //remove blank entry data
+        data = {
+          ...data,
+          from: '',
+          to: '',
+          text: '',
+          imageUrl: '',
+        };
+      }
+    }
+    return {
+      data: {
+        ...data,
+        ...additionalData,
+        textEnriched: convertSpecialStrings(data?.text),
+      },
+    };
+  } else {
+    return { data: additionalData };
+  }
 }
 
-interface GlobalExtra {
+interface ViewData extends Partial<CoreLinkEntity>, Partial<ViewError> {
+  textEnriched?: string;
   appTitle: string;
+  version: string;
 }
-interface UnknownData {
-  [key: string]: Object | null | undefined;
-}
-interface ViewInput extends Partial<CoreLinkEntity>, Partial<UnknownData> {}
-type ViewOutput = { data: GlobalExtra & ViewInput };

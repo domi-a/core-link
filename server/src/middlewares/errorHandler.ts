@@ -134,3 +134,7 @@ function logViewError(req: Request, err: string, message?: string) {
 function logApiError(req: Request, err: string, message?: string | undefined) {
   console.log('api error', req.path, err, message);
 }
+export interface ViewError {
+  error: number;
+  message?: string;
+}

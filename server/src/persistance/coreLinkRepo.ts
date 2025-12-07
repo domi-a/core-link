@@ -13,18 +13,40 @@ export class CoreLinkRepository extends MongooseRepository<CoreLinkEntity> {
     });
   }
 
-  async get(guid: string, incrementRead?: boolean) {
-    const bla = !incrementRead
+  async get(guid: string, incrementRead?: boolean): Promise<CoreLinkEntity> {
+    const findOrUpdate = !incrementRead
       ? this.entityModel.findOne({ guid })
       : this.entityModel.findOneAndUpdate(
           { guid },
           { $inc: { reads: 1 } },
           { new: true }
         );
-    return bla.then((entity) => {
+    return findOrUpdate.then((entity) => {
       const inst = this.instantiateFrom(entity);
       if (!inst) throw new EntryNotFoundError(guid);
       else return inst;
+    });
+  }
+
+  async getMulti(guids: string[]): Promise<CoreLinkEntity[]> {
+    const query = { guid: { $in: guids } };
+    return this.entityModel
+      .find(query)
+      .then((entities) => {
+        return entities.map((e) => this.instantiateFrom(e));
+      })
+      .then((entitys) => {
+        return entitys.filter((e) => e !== null);
+      });
+  }
+
+  async updateMulti(
+    guids: string[],
+    params: Partial<CoreLinkEntity>
+  ): Promise<number> {
+    const query = { guid: { $in: guids } };
+    return this.entityModel.updateMany(query, params).then((entities) => {
+      return entities.modifiedCount;
     });
   }
 
