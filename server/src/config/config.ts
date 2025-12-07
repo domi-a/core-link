@@ -5,6 +5,7 @@ const fallbackConfig = {
   port: 3000,
   stage: 'local',
   dbConnection: 'mongodb://myUser:pw@myMongo:27017', // not used for local or test
+  dbName: 'test',
   viewHost: 'http://localhost:3000', // to be replaced
   appTitle: 'CoreLink', // to be replaced
   tenorKey: 'myTenorApiKey', // to be replaced
@@ -20,6 +21,7 @@ function getEnv() {
     port: process.env.PORT,
     stage: process.env.STAGE,
     dbConnection: process.env.DB,
+    dbName: process.env.DBNAME,
     viewHost: process.env.HOST,
     appTitle: process.env.APP_TITLE,
     tenorKey: process.env.TENOR_KEY,
@@ -44,6 +46,7 @@ function getConfig(): Config {
     port: Number(rawConf.port || fallbackConfig.port),
     stage: getStage(rawConf.stage || fallbackConfig.stage),
     dbConnection: rawConf.dbConnection || fallbackConfig.dbConnection,
+    dbName: rawConf.dbName || fallbackConfig.dbName,
     viewHost: rawConf.viewHost || fallbackConfig.viewHost,
     appTitle: rawConf.appTitle || fallbackConfig.appTitle,
     tenorKey: rawConf.tenorKey || fallbackConfig.tenorKey,
@@ -54,7 +57,7 @@ function getConfig(): Config {
       text: rawConf.defaultText || fallbackConfig.defaultText,
     },
   };
-  console.log('used config', process.env.STAGE);
+  // console.log('used config stage', process.env.STAGE);
   return conf;
 }
 
@@ -62,6 +65,7 @@ interface Config {
   port: number;
   stage: 'local' | 'prod' | 'test';
   dbConnection: string;
+  dbName: string;
   viewHost: string;
   appTitle: string;
   tenorKey: string;

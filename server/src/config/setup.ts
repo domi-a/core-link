@@ -54,8 +54,10 @@ export async function initDb() {
       return MongoDBMemoryServer.testSeed();
     });
   } else {
-    return await MongoDB.initDB(config.dbConnection).then(({ close }) => {
-      dbClose = close;
-    });
+    return await MongoDB.initDB(config.dbConnection, config.dbName).then(
+      ({ close }) => {
+        dbClose = close;
+      }
+    );
   }
 }
