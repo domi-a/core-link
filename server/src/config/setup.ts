@@ -1,5 +1,7 @@
 /** @format */
 
+import { Express } from 'express';
+import { closeExperss, initExpress } from '../app';
 import { TenorController } from '../controllers/tenorController';
 import { CoreLinkRepository } from '../persistance/coreLinkRepo';
 import { MongoDBMemoryServer } from '../persistance/memDB';
@@ -9,12 +11,21 @@ import { TenorService } from '../services/tenorService';
 import { config } from './config';
 import { iocContainer } from './ioc';
 
-let dbClose: any;
+export let dbClose: () => Promise<void>;
+export let expessApp: Express;
 
-export async function initDependencies() {
+export async function initialize() {
   registerIocDependencies();
   await initDb();
-  listenOnExit();
+  process.on('exit', function () {
+    dbClose();
+  });
+  expessApp = await initExpress();
+  return expessApp;
+}
+export async function shutdown() {
+  await dbClose();
+  closeExperss();
 }
 
 export function registerIocDependencies() {
@@ -29,25 +40,22 @@ export function registerIocDependencies() {
       }
     }
   );
-  // console.log('ioc ready');
 }
 
-function initDb() {
+export async function initDb() {
   if (config.stage === 'local') {
-    return MongoDBMemoryServer.initMemDB().then(({ close }) => {
+    return await MongoDBMemoryServer.initMemDB().then(({ close }) => {
       dbClose = close;
-      MongoDBMemoryServer.seed();
+      return MongoDBMemoryServer.seed();
+    });
+  } else if (config.stage === 'test') {
+    return await MongoDBMemoryServer.initMemDB().then(({ close }) => {
+      dbClose = close;
+      return MongoDBMemoryServer.testSeed();
     });
   } else {
-    return MongoDB.initDB(config.dbConnection).then(({ close }) => {
+    return await MongoDB.initDB(config.dbConnection).then(({ close }) => {
       dbClose = close;
     });
   }
-}
-
-function listenOnExit() {
-  process.on('exit', function () {
-    dbClose();
-    console.log('exit');
-  });
 }

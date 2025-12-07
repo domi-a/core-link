@@ -6,7 +6,7 @@ fs.copySync('package.json', 'dist/package.json', { recursive: false });
 fs.copySync('package-lock.json', 'dist/package-lock.json', {
   recursive: false,
 });
-fs.copySync('.env.base', 'dist/.env.base', { recursive: false });
+// fs.copySync('.env.base', 'dist/.env.base', { recursive: false });
 fs.copySync('../Dockerfile', 'dist/Dockerfile', { recursive: false });
 fs.copySync('../docker-compose.yaml', 'dist/docker-compose.yaml', {
   recursive: false,

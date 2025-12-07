@@ -42,13 +42,11 @@ you need nfc tools on your phone to write the created link to the nfc-tag [andro
 
 ### set enviroment variables
 
-stored in .env.\* or docker-compose files (use whatever you like)
-
-- `.env.base` shared envs
-- `.env.local` used only for local development (not part of repo)
-- `.env.prod` could be used for production (not part of repo)
-- `docker-compose.yaml` base settings for deployment
-- `docker-compose.override.yaml` file i use additionally and store my production envs in (not part of repo)
+- `./server/src/config/config.ts` shared envs (fallbacks)
+- `.env.local` used for local development (not part of repo)
+- `./server/test-serup.js` used for test runner
+- `docker-compose.yaml` service.web.environment[] used for prod enviroments
+- `docker-compose.override.yaml`could be used too (not part of repo)
 
 minimum keys to change
 

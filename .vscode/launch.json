@@ -12,7 +12,8 @@
             ],
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen",
-            "cwd": "${workspaceFolder}/server"
+            "cwd": "${workspaceFolder}/server",
+            "envFile": "${workspaceFolder}/server/.env.local"
         },
         {
             "type": "node",
@@ -39,6 +40,19 @@
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen",
             "cwd": "${workspaceFolder}/server"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "test",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run-script",
+                "jest"
+            ],
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "cwd": "${workspaceFolder}/server",
         },
     ]
 }
