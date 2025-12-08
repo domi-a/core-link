@@ -1,5 +1,4 @@
 /** @format */
-// import '@testing-library/jest-dom';
 
 function setup() {
   // console.log('--------------set envs------------');
@@ -7,5 +6,4 @@ function setup() {
   process.env.PORT = '3001';
   process.env.HOST = 'http://localhost:3001';
 }
-
 module.exports = setup();

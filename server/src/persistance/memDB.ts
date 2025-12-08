@@ -45,10 +45,6 @@ export class MongoDBMemoryServer {
       for (const seed of testSeeds) {
         await repo.save(seed);
       }
-      console.log(
-        'seeded test entries - try with',
-        testSeeds.map((s) => getViewUrl(s.guid))
-      );
     }
   };
 }
@@ -109,9 +105,8 @@ const testSeeds: CoreLinkEntity[] = [
     from: 'CoreLink',
     to: 'creator',
     fixatedTill: getDateInDays(30),
-    text: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut 👌 labore et dolore magna aliquyam erat, sed diam voluptua.  sdfsdf\r\n ❤️ \r\nasdas google.de end *strong* > _italic_ asdasda ~stroked~ asd',
-    imageUrl:
-      'https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExOGhiaHNrNm85dHMzbnAwcmVjZTRqbmVrMGg5ODVjemFydmQ5eWlqeSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/OfkGZ5H2H3f8Y/giphy.gif',
+    text: ' *strong* sdfsdf  _italic_ asdasda ~stroked~  invidunt ut 👌 labore et doloroluptua.  sdfsdf\r\n ❤️ \r\nasdas \r\n👌',
+    imageUrl: 'https://media2.giphy.com/media/whatever/giphy.gif',
     secret: '123',
     reads: 10,
     writes: 10,

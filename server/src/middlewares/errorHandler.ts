@@ -58,7 +58,8 @@ export function viewErrorHandler(
     logViewError(req, '400', message);
     res.status(400);
     res.render('error', enrichViewData({ error: 400, message }));
-  } else if (Array.isArray(err.code) && err.code?.includes('PUG:')) {
+  } else if (typeof err.code === 'string' && err.code?.includes('PUG:')) {
+    //Array.isArray(err.code) &&
     const internalErr = JSON.stringify({ ...err, filename: undefined });
     logViewError(req, 'pug', internalErr);
     res.status(500);

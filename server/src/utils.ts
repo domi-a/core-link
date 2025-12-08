@@ -44,8 +44,8 @@ function convertUrls(text: string) {
 
 function convertSingleLineEmojis(text: string) {
   const regex =
-    /(\n|\r|\r\n)\s*([\u2000-\u3300][\u2000-\uff00]|[\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])\s*(\n|\r|\r\n)/gm;
-  return text.replaceAll(regex, (found, args) => {
+    /((?:\n|\r|\r\n)|^)\s*([\u2000-\u3300][\u2000-\uff00]|[\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])\s*((?:\n|\r|\r\n)|$)/gm;
+  return text.replaceAll(regex, (found) => {
     return (
       '<p style="font-size:3rem;">' +
       found.replaceAll('\r', '').replaceAll('\n', '').replaceAll(' ', '') +
