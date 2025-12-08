@@ -51,7 +51,7 @@ describe('full app - important usecases', () => {
     expect(getByDataTest(res, 'to').outerHTML).toContain('You');
     const text = getByDataTest(res, 'text').outerHTML;
     expect(text).toContain(
-      'created: 04.12.25, 18:11:46\nthis entry is just an example, click menu to change entry. \n maybe have a 👀 at the formating capabilities <p style="font-size:3rem;">👊</p>'
+      'this entry is just an example, click menu to change entry. \n maybe have a 👀 at the formating capabilities <p style="font-size:3rem;">👊</p>'
     );
     expect(getByDataTest(res, 'img').outerHTML).toContain(
       ' src=\"https://media.tenor.com/67UlO1i1iB0AAAAC/good-fine.gif\"'
