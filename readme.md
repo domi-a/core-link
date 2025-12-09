@@ -29,10 +29,11 @@ before producing hardware items you need nfc-tags. cheap ones that are known to 
 - icons are standard unicode emojis
 - rest of models is by me
 - [orca project](./misc/3dprint/print.3mf) (for round 25mm nfg-tags)
+  ![print project](./misc/3dprint/print-project.png)
 - the objects are assembled from 4 parts, so you could remove / replace any in an easy way
-- there is a pause at layer 8 that is intendet to insert the nfc-tag
-  ![print project](./misc/3dprint/print-project.png) ![pause while print](./misc/3dprint/print-pause.png).................
 - if you want to place your own stuff on the outer ring consider using diameter from 35.2mm to 44mm
+- there is a pause at layer 8 that is intendet to insert the nfc-tag
+  ![pause while print](./misc/3dprint/print-pause.png)
 
 ### after creating a hardware thing
 

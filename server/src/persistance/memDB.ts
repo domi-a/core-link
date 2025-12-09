@@ -39,6 +39,7 @@ export class MongoDBMemoryServer {
       );
     }
   };
+
   static testSeed = async () => {
     const repo = iocContainer.get<CoreLinkRepository>(CoreLinkRepository);
     if (repo) {
