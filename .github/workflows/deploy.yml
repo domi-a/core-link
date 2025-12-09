@@ -15,7 +15,7 @@ jobs:
           name: server-dist
           run-id: ${{ github.event.workflow_run.id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          path: dist
+          path: .
       - name: Copy files to server via SSH
         uses: appleboy/scp-action@v0.1.7
         with:
