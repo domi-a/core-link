@@ -33,7 +33,7 @@ jobs:
           name: server-dist
           run-id: ${{ github.event.workflow_run.id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          path: .
+          path: dist
 
       - name: Copy files to server via SSH
         uses: appleboy/scp-action@v0.1.7
@@ -42,16 +42,16 @@ jobs:
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_USER_SSH_KEY }}
           port: ${{ secrets.DEPLOY_PORT }}
-          source: "dist/*"
+          source: "dist/"
           target: "/home/${{ secrets.DEPLOY_USER }}/kudos/"
 
-      - name: Run docker app
-        uses: appleboy/ssh-action@v0.1.10
-        with:
-          host: ${{ secrets.DEPLOY_HOST }}
-          username: ${{ secrets.DEPLOY_USER }}
-          key: ${{ secrets.DEPLOY_USER_SSH_KEY }}
-          port: ${{ secrets.DEPLOY_PORT }}
-          script: |
-            cd /home/${{ secrets.DEPLOY_USER }}/kudos
-            docker compose up -d --build web
+      # - name: Run docker app
+      #   uses: appleboy/ssh-action@v0.1.10
+      #   with:
+      #     host: ${{ secrets.DEPLOY_HOST }}
+      #     username: ${{ secrets.DEPLOY_USER }}
+      #     key: ${{ secrets.DEPLOY_USER_SSH_KEY }}
+      #     port: ${{ secrets.DEPLOY_PORT }}
+      #     script: |
+      #       cd /home/${{ secrets.DEPLOY_USER }}/kudos
+      #       docker compose up -d --build web
