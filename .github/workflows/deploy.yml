@@ -42,7 +42,7 @@ jobs:
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_USER_SSH_KEY }}
           port: ${{ secrets.DEPLOY_PORT }}
-          source: "dist/**"
+          source: "dist/*"
           target: "/home/${{ secrets.DEPLOY_USER }}/kudos/"
 
       - name: Run docker app
@@ -54,4 +54,4 @@ jobs:
           port: ${{ secrets.DEPLOY_PORT }}
           script: |
             cd /home/${{ secrets.DEPLOY_USER }}/kudos
-            docker compose up -d --build web
+            mv dist/* .
