@@ -9,11 +9,10 @@ const modal = new bootstrap.Modal(modalEl, {
 
 function openGifModal() {
   const dialogInputEl = document.querySelector('#gif-dialog input');
-  // const imageUrlEl = document.querySelector('#imageUrl');
   const findButtonEl = document.querySelector('#gif-search');
   modal.show();
   dialogInputEl.addEventListener('keydown', (event) => {
-    if (event.isComposing || event.keyCode === 13) {
+    if (event.keyCode === 13) {
       searchTenor();
       searchButtonEl.focus();
       return;
