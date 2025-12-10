@@ -16,13 +16,14 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Bump version in package.json
+      - name: Bump version
         run: |
           cd server
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           npm version patch --no-git-tag-version
           git add package.json
+          git add package-lock.json
           git commit -m "chore: bump version [skip ci]"
           git push
 
@@ -41,7 +42,7 @@ jobs:
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_USER_SSH_KEY }}
           port: ${{ secrets.DEPLOY_PORT }}
-          source: "*"
+          source: "server/dist/*"
           target: "/home/${{ secrets.DEPLOY_USER }}/kudos/"
 
       - name: Run docker app
@@ -53,4 +54,4 @@ jobs:
           port: ${{ secrets.DEPLOY_PORT }}
           script: |
             cd /home/${{ secrets.DEPLOY_USER }}/kudos
-            docker compose up -d --build
+            docker compose up -d --build web
