@@ -82,40 +82,95 @@ describe('full app - important usecases', () => {
   });
 
   it('should update entry', async () => {
-    //todo: show edit
-    const res1 = await request(app)
+    //initial state
+    const res = await request(app).get('/edit/666');
+    expect(res.statusCode).toBe(200);
+    expect(superQuery(res, 'form[method=post]')).toBeTruthy();
+    expect(superQuery(res, 'form input[name=from]').value).toEqual('john doe');
+    expect(superQuery(res, 'form input[name=to]').value).toEqual('jane doe');
+    expect(superQuery(res, 'form textarea[name=text]').value).toContain(
+      'st wanted to say'
+    );
+    expect(superQuery(res, 'form input[name=imageUrl]').value).toEqual(
+      'https://media.tenor.com/5Pdhkfq8xYEAAAAC/spongebob-cant-wait.gif'
+    );
+    //update
+    const res2 = await request(app)
       .post('/update/666')
       .send(
-        'from=john+doe&to=jane+doe&text=hi+jane.%0D%0Ajust+wanted+to+say%3A+i%27m+happy+that+you+are+there.%0D%0Ahope+to+code+with+you+again+soon.%0D%0Acheckout+our+topic+on+google.com+or+http%3A%2F%2Fgoogle.org+or+https%3A%2F%2Fgoogle.de&imageUrl=https%3A%2F%2Fmedia.tenor.com%2F5Pdhkfq8xYEAAAAC%2Fspongebob-cant-wait.gif&fixateForDays=0'
+        'from=john+111&to=jane+222&text=hi+jane.%0D%0Ajust+wanted+to+say%3A+i%27m+happy+that+you+are+there.%0D%0Ahope+to+code+with+you+again+soon.%0D%0Acheckout+our+topic+on+google.com+or+http%3A%2F%2Fgoogle.org+or+https%3A%2F%2Fgoogle.de&imageUrl=https%3A%2F%2Fmedia.tenor.com%2F5Pdhkfq8xYEAAAAC%2Fspongebob-cant-wait.gif&fixateForDays=0'
       );
-    expect(res1.statusCode).toBe(200);
-    expect(res1.text.length).toBeGreaterThan(1000);
-    const res2 = await request(app).get('/view/666');
     expect(res2.statusCode).toBe(200);
-    expect(res2.text.length).toBeGreaterThan(1000);
+    expect(getByDataTest(res2, 'from').outerHTML).toContain('john 111');
+    expect(getByDataTest(res2, 'to').outerHTML).toContain('jane 222');
+    const text = getByDataTest(res2, 'text').outerHTML;
+    expect(text).toContain(
+      "just wanted to say: i'm happy that you are there.\nhope to code with you again soon."
+    );
+    expect(getByDataTest(res2, 'img').outerHTML).toEqual(
+      '<img class="w-100 border border-dark border-2 rounded-2" src="https://media.tenor.com/5Pdhkfq8xYEAAAAC/spongebob-cant-wait.gif" data-test="img">'
+    );
   });
 
-  it('should post new entry', async () => {
-    //todo: show create/edit first
-    const res1 = await request(app)
+  it('should create new entry', async () => {
+    //initial state
+    const res = await request(app).get('/create');
+    expect(res.statusCode).toBe(200);
+    expect(superQuery(res, 'form[method=post]')).toBeTruthy();
+    expect(superQuery(res, 'form input[name=from]').value).toEqual('');
+    expect(superQuery(res, 'form input[name=to]').value).toEqual('');
+    expect(superQuery(res, 'form textarea[name=text]').value).toContain('');
+    expect(superQuery(res, 'form input[name=imageUrl]').value).toEqual('');
+    //after create
+    const res2 = await request(app)
       .post('/create')
       .send(
-        'from=john+doe&to=jane+doe&text=hi+jane.%0D%0Ajust+wanted+to+say%3A+i%27m+happy+that+you+are+there.%0D%0Ahope+to+code+with+you+again+soon.%0D%0Acheckout+our+topic+on+google.com+or+http%3A%2F%2Fgoogle.org+or+https%3A%2F%2Fgoogle.de&imageUrl=https%3A%2F%2Fmedia.tenor.com%2F5Pdhkfq8xYEAAAAC%2Fspongebob-cant-wait.gif&fixateForDays=0'
+        'from=john&to=jane&text=hi+jane.%0D%0Ajust+wanted+to+say%3A+i%27m+happy+that+you+are+there.%0D%0Ahope+to+code+with+you+again+soon.%0D%0Acheckout+our+topic+on+google.com+or+http%3A%2F%2Fgoogle.org+or+https%3A%2F%2Fgoogle.de&imageUrl=https%3A%2F%2Fmedia.tenor.com%2F5Pdhkfq8xYEAAAAC%2Fspongebob-cant-wait.gif&fixateForDays=0'
       );
-    expect(res1.statusCode).toBe(200);
-    expect(res1.text.length).toBeGreaterThan(1000);
-    const res2 = await request(app).get('/view/666');
     expect(res2.statusCode).toBe(200);
-    expect(res2.text.length).toBeGreaterThan(1000);
-    //todo check url and rest
+    expect(getByDataTest(res2, 'from').outerHTML).toContain('john');
+    expect(getByDataTest(res2, 'to').outerHTML).toContain('jane');
+    const text = getByDataTest(res2, 'text').outerHTML;
+    expect(text).toContain(
+      "just wanted to say: i'm happy that you are there.\nhope to code with you again soon."
+    );
+    expect(getByDataTest(res2, 'img').outerHTML).toEqual(
+      '<img class="w-100 border border-dark border-2 rounded-2" src="https://media.tenor.com/5Pdhkfq8xYEAAAAC/spongebob-cant-wait.gif" data-test="img">'
+    );
+    expect(superQuery(res2, '#url').value).toContain(
+      'http://localhost:3001/view/'
+    );
   });
 
-  //todo: /create-blank
-  //todo: /unlock
+  it('should create blank entry', async () => {
+    const res = await request(app).get('/create-blank');
+    expect(res.statusCode).toBe(200);
+    expect(getByDataTest(res, 'from').outerHTML).toContain('CoreLink');
+    expect(getByDataTest(res, 'to').outerHTML).toContain('You');
+    const text = getByDataTest(res, 'text').outerHTML;
+    expect(text).toContain('this entry is just an example');
+    expect(getByDataTest(res, 'img').outerHTML).toEqual(
+      '<img class="w-100 border border-dark border-2 rounded-2" src="https://media.tenor.com/67UlO1i1iB0AAAAC/good-fine.gif" data-test="img">'
+    );
+    expect(superQuery(res, '#url').value).toContain(
+      'http://localhost:3001/view/'
+    );
+  });
 
-  //todo: render /
-  //todo: render /create-instructios
-  //todo: render /create-instructio
+  it('should unlock entry', async () => {
+    const res = await request(app).get('/unlock/777').set('cookie', '777=123');
+    expect(res.statusCode).toBe(200);
+  });
+
+  it('should return text pages', async () => {
+    const res0 = await request(app).get('/');
+    expect(res0.statusCode).toBe(200);
+    expect(res0.text.length).toBeGreaterThan(1000);
+
+    const res1 = await request(app).get('/create-instructions');
+    expect(res1.statusCode).toBe(200);
+    expect(res1.text.length).toBeGreaterThan(1000);
+  });
 
   afterAll(async () => {
     shutdown();

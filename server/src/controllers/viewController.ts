@@ -61,19 +61,6 @@ export class ViewController {
       }
     );
 
-    // app.get(
-    //   '/view/:guid/unlock',
-    //   (req: Request, res: Response, next: NextFunction) => {
-    //     const guid = req.params['guid'];
-    //     service
-    //       .unlock(guid, undefined, true)
-    //       .then((data) => {
-    //         res.redirect(`/view/${guid}`);
-    //       })
-    //       .catch(next);
-    //   }
-    // );
-
     app.get(
       '/unlock/:guid',
       (req: Request, res: Response, next: NextFunction) => {
