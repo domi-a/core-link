@@ -42,16 +42,16 @@ jobs:
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_USER_SSH_KEY }}
           port: ${{ secrets.DEPLOY_PORT }}
-          source: "dist/"
+          source: "dist/*"
           target: "/home/${{ secrets.DEPLOY_USER }}/kudos/"
 
-      # - name: Run docker app
-      #   uses: appleboy/ssh-action@v0.1.10
-      #   with:
-      #     host: ${{ secrets.DEPLOY_HOST }}
-      #     username: ${{ secrets.DEPLOY_USER }}
-      #     key: ${{ secrets.DEPLOY_USER_SSH_KEY }}
-      #     port: ${{ secrets.DEPLOY_PORT }}
-      #     script: |
-      #       cd /home/${{ secrets.DEPLOY_USER }}/kudos
-      #       docker compose up -d --build web
+      - name: Run docker app
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_USER_SSH_KEY }}
+          port: ${{ secrets.DEPLOY_PORT }}
+          script: |
+            cd /home/${{ secrets.DEPLOY_USER }}/kudos
+            docker compose up -d --build web
