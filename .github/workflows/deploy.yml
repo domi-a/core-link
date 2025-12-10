@@ -55,3 +55,5 @@ jobs:
           script: |
             cd /home/${{ secrets.DEPLOY_USER }}/kudos
             mv dist/* .
+            rmdir dist/
+            docker compose up -d --build web
