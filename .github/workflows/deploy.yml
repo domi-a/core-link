@@ -39,6 +39,7 @@ jobs:
             -H "x_signature: ${{ steps.sig.outputs.signature }}" \
             -F "file=@app.tar.gz" \
             ${{ secrets.DEPLOY_HOST }})
+          echo "upload_status=$status"
           echo "upload_status=$status" >> $GITHUB_OUTPUT
 
       # - name: Checkout code
