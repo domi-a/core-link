@@ -21,6 +21,7 @@ jobs:
 
       - name: tar artifact
         run: |
+          ls dist/
           tar czf app.tar.gz ./dist/
 
       - name: Generate HMAC signature
@@ -32,18 +33,22 @@ jobs:
           DEPLOY_SECRET: ${{ secrets.DEPLOY_USER_SSH_KEY }}
 
       - name: Upload to server
+        id: upload
         run: |
-          curl -X POST \
+          status=$(curl -s -o /dev/null -w "%{http_code}" \
             -H "x_signature: ${{ steps.sig.outputs.signature }}" \
             -F "file=@app.tar.gz" \
-            ${{ secrets.DEPLOY_HOST }}
+            ${{ secrets.DEPLOY_HOST }})
+          echo "upload_status=$status" >> $GITHUB_OUTPUT
 
       - name: Checkout code
+        if: ${{ steps.upload.outputs.upload_status == 200 }}
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Bump version
+        if: ${{ steps.upload.outputs.upload_status == 200 }}
         run: |
           cd server
           git config user.name "github-actions[bot]"
