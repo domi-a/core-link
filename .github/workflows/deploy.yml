@@ -19,21 +19,27 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path: dist
 
+      - name: tar artifact
+        run: |
+          ls dist/
+          ls
+          tar czf app.tar.gz ./dist/
+          ls dist/
+          ls
+
       - name: Generate HMAC signature
         id: sig
         run: |
-          ls
-          sig=$(openssl dgst -sha256 -hmac "$DEPLOY_SECRET" -binary app.tar.gz | xxd -p -c 256)
+          sig=$(openssl dgst -sha256 -hmac "$DEPLOY_SECRET" -binary dist/app.tar.gz | xxd -p -c 256)
           echo "signature=$sig" >> $GITHUB_OUTPUT
         env:
           DEPLOY_SECRET: ${{ secrets.DEPLOY_USER_SSH_KEY }}
 
       - name: Upload to server
         run: |
-          tar czf app.tar.gz .
           curl -X POST \
             -H "x-signature: ${{ steps.sig.outputs.signature }}" \
-            -F "file=@app.tar.gz" \
+            -F "file=@dist/app.tar.gz" \
             ${{ secrets.DEPLOY_HOST }}
 
       - name: Checkout code
