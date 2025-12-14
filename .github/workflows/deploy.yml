@@ -22,10 +22,6 @@ jobs:
       - name: tar artifact
         run: |
           tar czf app.tar.gz ./dist/
-          echo "... dist content"
-          ls dist/
-          echo "... root content"
-          ls
 
       - name: Generate HMAC signature
         id: sig
@@ -38,7 +34,7 @@ jobs:
       - name: Upload to server
         run: |
           curl -X POST \
-            -H "x-signature: ${{ steps.sig.outputs.signature }}" \
+            -H "x_signature: ${{ steps.sig.outputs.signature }}" \
             -F "file=@app.tar.gz" \
             ${{ secrets.DEPLOY_HOST }}
 
