@@ -11,10 +11,33 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: server-dist
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: dist
+
+      - name: Generate HMAC signature
+        id: sig
+        run: |
+          ls
+          sig=$(openssl dgst -sha256 -hmac "$DEPLOY_SECRET" -binary app.tar.gz | xxd -p -c 256)
+          echo "signature=$sig" >> $GITHUB_OUTPUT
+        env:
+          DEPLOY_SECRET: ${{ secrets.DEPLOY_USER_SSH_KEY }}
+
+      - name: Upload to server
         run: |
           tar czf app.tar.gz .
+          curl -X POST \
+            -H "x-signature: ${{ steps.sig.outputs.signature }}" \
+            -F "file=@app.tar.gz" \
+            ${{ secrets.DEPLOY_HOST }}
+
+      - name: Checkout code
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -28,26 +51,3 @@ jobs:
           git add package-lock.json
           git commit -m "chore: bump version [skip ci]"
           git push
-
-      - name: Download build artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: server-dist
-          run-id: ${{ github.event.workflow_run.id }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          path: dist
-
-      - name: Generate HMAC signature
-        id: sig
-        run: |
-          sig=$(openssl dgst -sha256 -hmac "$DEPLOY_SECRET" -binary app.tar.gz | xxd -p -c 256)
-          echo "signature=$sig" >> $GITHUB_OUTPUT
-        env:
-          DEPLOY_SECRET: ${{ secrets.DEPLOY_USER_SSH_KEY }}
-
-      - name: Upload to server
-        run: |
-          curl -X POST \
-            -H "x-signature: ${{ steps.sig.outputs.signature }}" \
-            -F "file=@app.tar.gz" \
-            ${{ secrets.DEPLOY_HOST }}
