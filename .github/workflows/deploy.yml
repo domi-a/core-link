@@ -21,7 +21,6 @@ jobs:
 
       - name: tar artifact
         run: |
-          ls dist/
           tar czf app.tar.gz ./dist/
 
       - name: Generate HMAC signature
@@ -42,20 +41,17 @@ jobs:
           echo "upload_status=$status"
           echo "upload_status=$status" >> $GITHUB_OUTPUT
 
-      # - name: Checkout code
-      #   if: ${{ steps.upload.outputs.upload_status == 200 }}
-      #   uses: actions/checkout@v4
-      #   with:
-      #     token: ${{ secrets.GITHUB_TOKEN }}
-
-      # - name: Bump version
-      #   if: ${{ steps.upload.outputs.upload_status == 200 }}
-      #   run: |
-      #     cd server
-      #     git config user.name "github-actions[bot]"
-      #     git config user.email "github-actions[bot]@users.noreply.github.com"
-      #     npm version patch --no-git-tag-version
-      #     git add package.json
-      #     git add package-lock.json
-      #     git commit -m "chore: bump version [skip ci]"
-      #     git push
+      - name: Bump version
+        if: ${{ steps.upload.outputs.upload_status == 200 }}
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd server
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          npm version patch --no-git-tag-version
+          git add package.json
+          git add package-lock.json
+          git commit -m "chore: bump version [skip ci]"
+          git push
