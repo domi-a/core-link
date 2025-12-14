@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        run: |
+          tar czf app.tar.gz .
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -35,25 +37,17 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path: dist
 
-      - name: Copy files to server via SSH
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.DEPLOY_HOST }}
-          username: ${{ secrets.DEPLOY_USER }}
-          key: ${{ secrets.DEPLOY_USER_SSH_KEY }}
-          port: ${{ secrets.DEPLOY_PORT }}
-          source: "dist/*"
-          target: "/home/${{ secrets.DEPLOY_USER }}/kudos/"
+      - name: Generate HMAC signature
+        id: sig
+        run: |
+          sig=$(openssl dgst -sha256 -hmac "$DEPLOY_SECRET" -binary app.tar.gz | xxd -p -c 256)
+          echo "signature=$sig" >> $GITHUB_OUTPUT
+        env:
+          DEPLOY_SECRET: ${{ secrets.DEPLOY_USER_SSH_KEY }}
 
-      - name: Run docker app
-        uses: appleboy/ssh-action@v0.1.10
-        with:
-          host: ${{ secrets.DEPLOY_HOST }}
-          username: ${{ secrets.DEPLOY_USER }}
-          key: ${{ secrets.DEPLOY_USER_SSH_KEY }}
-          port: ${{ secrets.DEPLOY_PORT }}
-          script: |
-            cd /home/${{ secrets.DEPLOY_USER }}/kudos
-            mv dist/* .
-            rmdir dist/
-            docker compose up -d --build web
+      - name: Upload to server
+        run: |
+          curl -X POST \
+            -H "x-signature: ${{ steps.sig.outputs.signature }}" \
+            -F "file=@app.tar.gz" \
+            ${{ secrets.DEPLOY_HOST }}
