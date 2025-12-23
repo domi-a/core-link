@@ -38,9 +38,10 @@ jobs:
             -H "x_signature: ${{ steps.sig.outputs.signature }}" \
             -F "file=@app.tar.gz" \
             ${{ secrets.DEPLOY_HOST }})
-            if [ "$status" -ne 200 ]; then \
-              echo "Deployment failed (HTTP $status)" \
-              exit 1 \
+
+            if [ "$status" -ne 200 ]; then
+              echo "Deployment failed (HTTP $status)"
+              exit 1
             fi
 
       - name: Checkout code
