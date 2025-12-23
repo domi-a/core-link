@@ -1,11 +1,14 @@
 name: Deploy
+
 on:
   workflow_run:
     workflows: ["Build"]
-    types:
-      - completed
+    branches: [main]
+    types: [completed]
+
 jobs:
   deploy:
+    environment: production
     permissions:
       contents: write
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
@@ -38,17 +41,18 @@ jobs:
             -H "x_signature: ${{ steps.sig.outputs.signature }}" \
             -F "file=@app.tar.gz" \
             ${{ secrets.DEPLOY_HOST }})
-          echo "upload_status=$status"
-          echo "upload_status=$status" >> $GITHUB_OUTPUT
+
+            if [ "$status" -ne 200 ]; then
+              echo "Deployment failed (HTTP $status)"
+              exit 1
+            fi
 
       - name: Checkout code
-        if: ${{ steps.upload.outputs.upload_status == 200 }}
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Bump version
-        if: ${{ steps.upload.outputs.upload_status == 200 }}
         run: |
           cd server
           git config user.name "github-actions[bot]"
