@@ -1,13 +1,13 @@
 name: Deploy
 
 on:
-  workflow_run:
-    workflows: ["Build"]
-    # branches: [main]
-    types: [completed]
+  push:
+    branches:
+      - main
 
 jobs:
   deploy:
+    needs: build
     environment: production
     permissions:
       contents: write
@@ -64,4 +64,3 @@ jobs:
           git add package-lock.json
           git commit -m "chore: bump version [skip ci]"
           git push
-
