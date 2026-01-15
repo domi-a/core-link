@@ -22,11 +22,26 @@ jobs:
         run: npm run build
         working-directory: "server"
 
+      - name: debug output
+        run: |
+          echo "-- ls root"
+          ls
+          echo "-- ls server"
+          cd server
+          ls
+          cd dist
+          echo "-- ls server/dist"
+          ls
+
+      - name: tar artifact
+        run: |
+          tar czf app.tar.gz server/dist/
+
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
           name: server-dist
-          path: server/dist
+          path: app.tar.gz
 
   deploy:
     needs: test-and-build
@@ -37,23 +52,38 @@ jobs:
       contents: write
 
     steps:
-      - name: Download build artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: server-dist
-          run-id: ${{ github.event.workflow_run.id }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          path: dist
-
-      - name: tar artifact
+      - name: debug output
         run: |
           echo "-- ls root"
           ls
           cd dist
-          echo "-- ls server/dist"
+          echo "-- ls dist"
           ls
-          cd ..
-          tar czf app.tar.gz ./dist/
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: server-dist
+          # run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: .
+
+      - name: debug output
+        run: |
+          echo "-- ls root"
+          ls
+          # cd dist
+          # echo "-- ls dist"
+          # ls
+      # - name: tar artifact
+      #   run: |
+      #     echo "-- ls root"
+      #     ls
+      #     cd dist
+      #     echo "-- ls server/dist"
+      #     ls
+      #     cd ..
+      #     tar czf app.tar.gz ./dist/
 
       - name: Generate HMAC signature
         id: sig
