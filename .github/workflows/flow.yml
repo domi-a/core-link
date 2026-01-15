@@ -43,7 +43,7 @@ jobs:
           echo "-- ls root"
           ls
           cd server
-          echo "-- ls server
+          echo "-- ls server"
           ls
           cd dist
           echo "-- ls server/dist"
