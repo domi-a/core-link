@@ -40,41 +40,46 @@ jobs:
 
       - name: tar artifact
         run: |
+          ls
+          cd server
+          ls
+          cd dist
+          ls
           tar czf app.tar.gz server/dist/
 
-      - name: Generate HMAC signature
-        id: sig
-        run: |
-          sig=$(openssl dgst -sha256 -hmac "$DEPLOY_SECRET" -binary app.tar.gz | xxd -p -c 256)
-          echo "signature=$sig" >> $GITHUB_OUTPUT
-        env:
-          DEPLOY_SECRET: ${{ secrets.DEPLOY_USER_SSH_KEY }}
+      # - name: Generate HMAC signature
+      #   id: sig
+      #   run: |
+      #     sig=$(openssl dgst -sha256 -hmac "$DEPLOY_SECRET" -binary app.tar.gz | xxd -p -c 256)
+      #     echo "signature=$sig" >> $GITHUB_OUTPUT
+      #   env:
+      #     DEPLOY_SECRET: ${{ secrets.DEPLOY_USER_SSH_KEY }}
 
-      - name: Upload to server
-        id: upload
-        run: |
-          status=$(curl -s -o /dev/null -w "%{http_code}" \
-            -H "x_signature: ${{ steps.sig.outputs.signature }}" \
-            -F "file=@app.tar.gz" \
-            ${{ secrets.DEPLOY_HOST }})
+      # - name: Upload to server
+      #   id: upload
+      #   run: |
+      #     status=$(curl -s -o /dev/null -w "%{http_code}" \
+      #       -H "x_signature: ${{ steps.sig.outputs.signature }}" \
+      #       -F "file=@app.tar.gz" \
+      #       ${{ secrets.DEPLOY_HOST }})
 
-            if [ "$status" -ne 200 ]; then
-              echo "Deployment failed (HTTP $status)"
-              exit 1
-            fi
+      #       if [ "$status" -ne 200 ]; then
+      #         echo "Deployment failed (HTTP $status)"
+      #         exit 1
+      #       fi
 
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Checkout code
+      #   uses: actions/checkout@v4
+      #   with:
+      #     token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Bump version
-        run: |
-          cd server
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          npm version patch --no-git-tag-version
-          git add package.json
-          git add package-lock.json
-          git commit -m "chore: bump version [skip ci]"
-          git push
+      # - name: Bump version
+      #   run: |
+      #     cd server
+      #     git config user.name "github-actions[bot]"
+      #     git config user.email "github-actions[bot]@users.noreply.github.com"
+      #     npm version patch --no-git-tag-version
+      #     git add package.json
+      #     git add package-lock.json
+      #     git commit -m "chore: bump version [skip ci]"
+      #     git push
