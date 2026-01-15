@@ -12,6 +12,7 @@ jobs:
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
+        working-directory: "server"
         with:
           node-version: "22"
           cache: "npm"
