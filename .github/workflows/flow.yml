@@ -3,7 +3,7 @@ name: Build and Test
 on: [push]
 
 jobs:
-  build-test:
+  test-and-build:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,8 +22,14 @@ jobs:
         run: npm run build
         working-directory: "server"
 
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: server-dist
+          path: server/dist
+
   deploy:
-    needs: build-test
+    needs: test-and-build
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment: production
@@ -31,32 +37,31 @@ jobs:
       contents: write
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Install dependencies
-        run: npm ci
-        working-directory: "server"
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: server-dist
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: dist
 
       - name: tar artifact
         run: |
           echo "-- ls root"
           ls
-          cd server
-          echo "-- ls server"
-          ls
           cd dist
           echo "-- ls server/dist"
           ls
-          tar czf app.tar.gz server/dist/
+          cd ..
+          tar czf app.tar.gz ./dist/
 
-      # - name: Generate HMAC signature
-      #   id: sig
-      #   run: |
-      #     sig=$(openssl dgst -sha256 -hmac "$DEPLOY_SECRET" -binary app.tar.gz | xxd -p -c 256)
-      #     echo "signature=$sig" >> $GITHUB_OUTPUT
-      #   env:
-      #     DEPLOY_SECRET: ${{ secrets.DEPLOY_USER_SSH_KEY }}
+      - name: Generate HMAC signature
+        id: sig
+        run: |
+          sig=$(openssl dgst -sha256 -hmac "$DEPLOY_SECRET" -binary app.tar.gz | xxd -p -c 256)
+          echo "signature=$sig" >> $GITHUB_OUTPUT
+        env:
+          DEPLOY_SECRET: ${{ secrets.DEPLOY_USER_SSH_KEY }}
 
       # - name: Upload to server
       #   id: upload
