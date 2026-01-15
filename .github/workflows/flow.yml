@@ -56,9 +56,6 @@ jobs:
         run: |
           echo "-- ls root"
           ls
-          cd dist
-          echo "-- ls dist"
-          ls
 
       - name: Download build artifact
         uses: actions/download-artifact@v4
@@ -72,9 +69,6 @@ jobs:
         run: |
           echo "-- ls root"
           ls
-          # cd dist
-          # echo "-- ls dist"
-          # ls
       # - name: tar artifact
       #   run: |
       #     echo "-- ls root"
