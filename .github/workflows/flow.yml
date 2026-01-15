@@ -40,10 +40,13 @@ jobs:
 
       - name: tar artifact
         run: |
+          echo "-- ls root"
           ls
           cd server
+          echo "-- ls server
           ls
           cd dist
+          echo "-- ls server/dist"
           ls
           tar czf app.tar.gz server/dist/
 
