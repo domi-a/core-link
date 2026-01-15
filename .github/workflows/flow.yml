@@ -40,7 +40,7 @@ jobs:
 
       - name: tar artifact
         run: |
-          tar czf app.tar.gz ./dist/
+          tar czf app.tar.gz server/dist/
 
       - name: Generate HMAC signature
         id: sig
