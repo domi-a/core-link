@@ -103,10 +103,10 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
-      # - name: Set up Git
-      #   run: |
-      #     git config --global user.name "github-actions[bot]"
-      #     git config --global user.email "github-actions[bot]@users.noreply.github.com"
+      - name: Set up Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Bump version
         run: |
@@ -115,7 +115,7 @@ jobs:
           npm version patch -m "[skip ci] bump to  %s"
           echo "$(npm pkg get version | xargs)"
           git add .
-          git commit -m "[skip ci] version bump"
+          git commit -m "[skip ci] version bump after release $(rel_version)"
           git status
           git push origin HEAD:${{ github.ref_name }} --follow-tags
 
