@@ -110,8 +110,10 @@ jobs:
       - name: Bump version
         run: |
           cd server
-          npm version patch -m "[skip ci] bump to  %s "
-          git push --follow-tags
+          echo "$(npm pkg get version | xargs)"
+          npm version patch -m "[skip ci] bump to  %s"
+          echo "$(npm pkg get version | xargs)"
+          git push origin --follow-tags
 
       # - name: Checkout code
       #   uses: actions/checkout@v4
