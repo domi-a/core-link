@@ -99,6 +99,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.ref_name }}
           token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0
 
@@ -113,12 +114,7 @@ jobs:
           echo "$(npm pkg get version | xargs)"
           npm version patch -m "[skip ci] bump to  %s"
           echo "$(npm pkg get version | xargs)"
-          git push origin --follow-tags
-
-      # - name: Checkout code
-      #   uses: actions/checkout@v4
-      #   with:
-      #     token: ${{ secrets.GITHUB_TOKEN }}
+          git push origin HEAD:${{ github.ref_name }} --follow-tags
 
       # - name: Bump version
       #   run: |
