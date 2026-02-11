@@ -22,26 +22,27 @@ jobs:
         run: npm run build
         working-directory: "server"
 
+      - name: tar artifact
+        run: |
+          cd server
+          tar czf app.tar.gz dist/
+
       - name: debug output
         run: |
-          echo "-- ls root"
+          echo "------- ls root"
           ls
-          echo "-- ls server"
+          echo "------- ls server"
           cd server
           ls
           cd dist
-          echo "-- ls server/dist"
+          echo "------- ls server/dist"
           ls
-
-      - name: tar artifact
-        run: |
-          tar czf app.tar.gz server/dist/
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
           name: server-dist
-          path: app.tar.gz
+          path: dist/app.tar.gz
 
   deploy:
     needs: test-and-build
