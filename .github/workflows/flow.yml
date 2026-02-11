@@ -91,6 +91,7 @@ jobs:
             fi
 
   bump-version:
+    needs: deploy
     # if: "!contains(github.event.head_commit.message, 'chore(release)')"
     runs-on: ubuntu-latest
 
