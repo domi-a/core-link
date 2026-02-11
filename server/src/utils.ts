@@ -53,14 +53,19 @@ function convertSingleLineEmojis(text: string) {
     );
   });
 }
-
+// (\s|^|\n|\r|\r\n)\*([A-z ;:,.-öäüÖÄÜß!&/()=])+\*(\s|$|\n|\r|\r\n)
 function convertFontStyle(
   text: string,
   escapeSeq: string,
   tag: string,
   addClass: string
 ) {
-  const regex = new RegExp(`\\s\\${escapeSeq}([A-z])*\\${escapeSeq}\\s`, 'gim');
+  // \\n|\\r|\\r\\n
+  //   const regex = new RegExp(`(\\s|^)\\${escapeSeq}([A-z ;:,.-öäüÖÄÜß!&/()=])+\\${escapeSeq}(\\s|$)`,'g');
+  const regex = new RegExp(
+    `(\\s)\\${escapeSeq}([A-z ;:,.-öäüÖÄÜß!&/()=])+\\${escapeSeq}(\\s)`,
+    'g'
+  );
   return text.replaceAll(regex, (found, args) => {
     return ` <${tag} class="${addClass}">${found.replace(found, found.replace(` ${escapeSeq}`, '').replace(`${escapeSeq} `, ''))}</${tag}> `;
   });

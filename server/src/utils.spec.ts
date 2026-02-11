@@ -46,6 +46,10 @@ describe('utils', () => {
       'pre <span class="fw-bold">boldtext</span> post'
     );
 
+    expect(
+      convertSpecialStrings(' *DANKE, dass du da bist!* \r\n❤️\r\n *bla* ')
+    ).toContain('<span class="fw-bold">DANKE, dass du da bist!</span>');
+
     expect(convertSpecialStrings('pre !\r\n _italictext_ \r\npost')).toContain(
       'pre !\r\n <em class="">italictext</em> \r\npost'
     );
