@@ -90,18 +90,38 @@ jobs:
               exit 1
             fi
 
+  bump-version:
+    # if: "!contains(github.event.head_commit.message, 'chore(release)')"
+    runs-on: ubuntu-latest
+
+    steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Set up Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Bump version
         run: |
           cd server
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          npm version patch --no-git-tag-version
-          git add package.json
-          git add package-lock.json
-          git commit -m "chore: bump version [skip ci]"
-          git push
+          npm version patch -m "[skip ci] bump to  %s "
+          git push --follow-tags
+
+      # - name: Checkout code
+      #   uses: actions/checkout@v4
+      #   with:
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+
+      # - name: Bump version
+      #   run: |
+      #     cd server
+      #     npm version patch --no-git-tag-version
+      #     git add package.json
+      #     git add package-lock.json
+      #     git commit -m "chore: bump version [skip ci]"
+      #     git push
