@@ -94,6 +94,8 @@ jobs:
     needs: deploy
     # if: "!contains(github.event.head_commit.message, 'chore(release)')"
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout code
@@ -111,7 +113,7 @@ jobs:
       - name: Bump version
         run: |
           cd server
-          rel_version = npm pkg get version | xargs
+          rel_version=$(npm pkg get version | xargs)
           npm version patch -m "[skip ci] bump to  %s"
           git add .
           git commit -m "[skip ci] version bump after release $rel_version"
