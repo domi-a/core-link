@@ -64,10 +64,10 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path: .
 
-      - name: debug output
-        run: |
-          echo "-- ls root"
-          ls
+      # - name: debug output
+      #   run: |
+      #     echo "-- ls root"
+      #     ls
 
       - name: Generate HMAC signature
         id: sig
@@ -111,9 +111,11 @@ jobs:
       - name: Bump version
         run: |
           cd server
-          echo "$(npm pkg get version | xargs)"
+          rel_version = npm pkg get version | xargs
           npm version patch -m "[skip ci] bump to  %s"
           echo "$(npm pkg get version | xargs)"
+          git add .
+          git commit -m "[skip ci] version bump"
           git status
           git push origin HEAD:${{ github.ref_name }} --follow-tags
 
