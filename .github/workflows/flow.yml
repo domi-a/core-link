@@ -113,17 +113,6 @@ jobs:
           cd server
           rel_version = npm pkg get version | xargs
           npm version patch -m "[skip ci] bump to  %s"
-          echo "$(npm pkg get version | xargs)"
           git add .
-          git commit -m "[skip ci] version bump after release $(rel_version)"
-          git status
+          git commit -m "[skip ci] version bump after release $rel_version"
           git push origin HEAD:${{ github.ref_name }} --follow-tags
-
-      # - name: Bump version
-      #   run: |
-      #     cd server
-      #     npm version patch --no-git-tag-version
-      #     git add package.json
-      #     git add package-lock.json
-      #     git commit -m "chore: bump version [skip ci]"
-      #     git push
