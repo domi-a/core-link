@@ -42,7 +42,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: server-dist
-          path: dist/app.tar.gz
+          path: server/app.tar.gz
 
   deploy:
     needs: test-and-build
