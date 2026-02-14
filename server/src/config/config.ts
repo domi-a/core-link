@@ -14,15 +14,14 @@ const fallbackConfig = {
   defaultTo: 'Someone',
   defaultText:
     ' *attach a message to this coin* \r\n\
-    click ~change entry~ in menu to create your own:\r\n\
-    🤘\r\n\
+    click *change entry* in menu to enter your own message like:\r\n\r\n\
     📃 greeting card\n\
-    🫡 horor somebodys work\n\
+    🫡 honor somebodys work\n\
     ♥️ say thank you\n\
     📣 share some respect\n\
+    🫵 use as KUDOS-card\n\
     ⭐ highligh an achievement\n\
-    🫵use as KUDOS-card\n\
-    ',
+    🤘\n',
 };
 
 function getEnv() {

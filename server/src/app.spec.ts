@@ -146,7 +146,7 @@ describe('full app - important usecases', () => {
     // expect(getByDataTest(res, 'from').outerHTML).toContain('CoreLink');
     // expect(getByDataTest(res, 'to').outerHTML).toContain('You');
     const text = getByDataTest(res, 'text').outerHTML;
-    expect(text).toContain('in menu to create your own');
+    expect(text).toContain('in menu to enter your own message');
     expect(getByDataTest(res, 'img').outerHTML).toEqual(
       '<img class="w-100 border border-dark border-2 rounded-2" src="https://media.tenor.com/67UlO1i1iB0AAAAC/good-fine.gif" data-test="img">'
     );

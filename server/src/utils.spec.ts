@@ -8,8 +8,8 @@ describe('utils', () => {
       '<p style="font-size:3rem;">👌</p>'
     );
 
-    expect(convertSpecialStrings('asdasd asdasd !\r\n 👌\r\n')).toContain(
-      '<p style="font-size:3rem;">👌</p>'
+    expect(convertSpecialStrings('asdasd asdasd !\r\n 🤘 \r\n')).toContain(
+      '<p style="font-size:3rem;">🤘</p>'
     );
 
     expect(
