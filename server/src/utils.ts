@@ -44,7 +44,7 @@ function convertUrls(text: string) {
 
 function convertSingleLineEmojis(text: string) {
   const regex =
-    /((?:\n|\r|\r\n)|^)\s*([\u2000-\u3300][\u2000-\uff00]|[\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])\s*((?:\n|\r|\r\n)|$)/gm;
+    /((?:\n|\r|\r\n)|^)\s*([\u2000-\u3300]([\u1F00-\uFF00]|[\uA000-\uFFFF])|[\uD83C-\uD83E][\uDC00-\uDFFF])\s*((?:\n|\r|\r\n)|$)/gm;
   return text.replaceAll(regex, (found) => {
     return (
       '<p style="font-size:3rem;">' +
@@ -53,14 +53,19 @@ function convertSingleLineEmojis(text: string) {
     );
   });
 }
-
+// (\s|^|\n|\r|\r\n)\*([A-z ;:,.-öäüÖÄÜß!&/()=])+\*(\s|$|\n|\r|\r\n)
 function convertFontStyle(
   text: string,
   escapeSeq: string,
   tag: string,
   addClass: string
 ) {
-  const regex = new RegExp(`\\s\\${escapeSeq}([A-z])*\\${escapeSeq}\\s`, 'gim');
+  // \\n|\\r|\\r\\n
+  //   const regex = new RegExp(`(\\s|^)\\${escapeSeq}([A-z ;:,.-öäüÖÄÜß!&/()=])+\\${escapeSeq}(\\s|$)`,'g');
+  const regex = new RegExp(
+    `(\\s)\\${escapeSeq}([A-z ;:,.-öäüÖÄÜß!&/()=])+\\${escapeSeq}(\\s)`,
+    'g'
+  );
   return text.replaceAll(regex, (found, args) => {
     return ` <${tag} class="${addClass}">${found.replace(found, found.replace(` ${escapeSeq}`, '').replace(`${escapeSeq} `, ''))}</${tag}> `;
   });
