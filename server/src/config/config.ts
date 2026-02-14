@@ -14,7 +14,7 @@ const fallbackConfig = {
   defaultTo: 'Someone',
   defaultText:
     ' *attach a message to this coin* \r\n\
-    click *change entry* in menu to enter your own message like:\r\n\r\n\
+    click _change this entry_ in menu to enter your own message like:\r\n\r\n\
     📃 greeting card\n\
     🫡 honor somebodys work\n\
     ♥️ say thank you\n\
