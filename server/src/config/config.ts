@@ -10,10 +10,19 @@ const fallbackConfig = {
   appTitle: 'CoreLink', // to be replaced
   tenorKey: 'myTenorApiKey', // to be replaced
   defaultImageUrl: 'https://media.tenor.com/67UlO1i1iB0AAAAC/good-fine.gif',
-  defaultFrom: 'CoreLink',
-  defaultTo: 'You',
+  defaultFrom: 'You',
+  defaultTo: 'Someone',
   defaultText:
-    'this entry is just an example, click menu to change entry. \r\n maybe have a 👀 at the formating capabilities \r\n 👊 \r\n google.de \r\n text can be:normal, *bold* , _italic_ or ~stroked~ ',
+    ' *attach a message to this coin* \r\n\
+    click ~change entry~ in menu to create your own:\r\n\
+    🤘\r\n\
+    📃 greeting card\n\
+    🫡 horor somebodys work\n\
+    ♥️ say thank you\n\
+    📣 share some respect\n\
+    ⭐ highligh an achievement\n\
+    🫵use as KUDOS-card\n\
+    ',
 };
 
 function getEnv() {
