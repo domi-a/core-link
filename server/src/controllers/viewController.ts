@@ -153,7 +153,7 @@ export function enrichViewData(
         data = {
           ...data,
           ...config.defaultEntry,
-          text: dateTxt + config.defaultEntry.text,
+          text: config.defaultEntry.text + dateTxt,
         };
       } else {
         //remove blank entry data
