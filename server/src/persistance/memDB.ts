@@ -23,7 +23,7 @@ export class MongoDBMemoryServer {
 
   static closeDB = async () => {
     await mongoose.disconnect();
-    await this.mongoServer?.stop();
+    await this.mongoServer?.stop({ doCleanup: true, force: true });
     // console.log('memdb stopped');
   };
 
