@@ -1,0 +1,121 @@
+name: Build and Test
+
+on: [push]
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: "server"
+
+      - name: Run tests
+        run: npm run jest
+        working-directory: "server"
+
+      - name: Build app
+        run: npm run build
+        working-directory: "server"
+
+      - name: tar artifact
+        run: |
+          cd server
+          tar czf app.tar.gz dist/
+
+      - name: debug output
+        run: |
+          echo "------- ls root"
+          ls
+          echo "------- ls server"
+          cd server
+          ls
+          cd dist
+          echo "------- ls server/dist"
+          ls
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: server-dist
+          path: server/app.tar.gz
+
+  deploy:
+    needs: test-and-build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    permissions:
+      contents: write
+
+    steps:
+      # - name: debug output
+      #   run: |
+      #     echo "-- ls root"
+      #     ls
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: server-dist
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: .
+
+      # - name: debug output
+      #   run: |
+      #     echo "-- ls root"
+      #     ls
+
+      - name: Generate HMAC signature
+        id: sig
+        env:
+          DEPLOY_SECRET: ${{ secrets.DEPLOY_USER_SSH_KEY }}
+        run: |
+          sig=$(openssl dgst -sha256 -hmac "$DEPLOY_SECRET" -binary app.tar.gz | xxd -p -c 256)
+          echo "signature=$sig" >> $GITHUB_OUTPUT
+
+      - name: Upload to server
+        id: upload
+        run: |
+          status=$(curl -s -o /dev/null -w "%{http_code}" \
+            -H "x_signature: ${{ steps.sig.outputs.signature }}" \
+            -F "file=@app.tar.gz" \
+            ${{ secrets.DEPLOY_HOST }})
+
+            if [ "$status" -ne 200 ]; then
+              echo "Deployment failed (HTTP $status)"
+              exit 1
+            fi
+
+  bump-version:
+    needs: deploy
+    # if: "!contains(github.event.head_commit.message, 'chore(release)')"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          token: ${{ secrets.MY_PAT }}
+          fetch-depth: 0
+
+      - name: Set up Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Bump version
+        run: |
+          cd server
+          rel_version=$(npm pkg get version | xargs)
+          npm version patch -m "[skip ci] bump to  %s"
+          git add .
+          git commit -m "[skip ci] version bump after release $rel_version"
+          git push origin HEAD:${{ github.ref_name }} --follow-tags

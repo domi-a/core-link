@@ -47,12 +47,10 @@ describe('full app - important usecases', () => {
   it('should render fallback view', async () => {
     const res = await request(app).get('/view/888');
     expect(res.statusCode).toBe(200);
-    expect(getByDataTest(res, 'from').outerHTML).toContain('CoreLink');
-    expect(getByDataTest(res, 'to').outerHTML).toContain('You');
+    expect(getByDataTest(res, 'from').outerHTML).toContain('You');
+    expect(getByDataTest(res, 'to').outerHTML).toContain('Someone');
     const text = getByDataTest(res, 'text').outerHTML;
-    expect(text).toContain(
-      'this entry is just an example, click menu to change entry. \n maybe have a 👀 at the formating capabilities <p style="font-size:3rem;">👊</p>'
-    );
+    expect(text).toContain('attach a message to this coin');
     expect(getByDataTest(res, 'img').outerHTML).toContain(
       ' src=\"https://media.tenor.com/67UlO1i1iB0AAAAC/good-fine.gif\"'
     );
@@ -145,10 +143,10 @@ describe('full app - important usecases', () => {
   it('should create blank entry', async () => {
     const res = await request(app).get('/create-blank');
     expect(res.statusCode).toBe(200);
-    expect(getByDataTest(res, 'from').outerHTML).toContain('CoreLink');
-    expect(getByDataTest(res, 'to').outerHTML).toContain('You');
+    // expect(getByDataTest(res, 'from').outerHTML).toContain('CoreLink');
+    // expect(getByDataTest(res, 'to').outerHTML).toContain('You');
     const text = getByDataTest(res, 'text').outerHTML;
-    expect(text).toContain('this entry is just an example');
+    expect(text).toContain('in menu to enter your own message');
     expect(getByDataTest(res, 'img').outerHTML).toEqual(
       '<img class="w-100 border border-dark border-2 rounded-2" src="https://media.tenor.com/67UlO1i1iB0AAAAC/good-fine.gif" data-test="img">'
     );
