@@ -59,7 +59,7 @@ jobs:
       #     ls
 
       - name: Download build artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: server-dist
           github-token: ${{ secrets.GITHUB_TOKEN }}
