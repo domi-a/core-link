@@ -8,7 +8,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Install dependencies
         run: npm ci
@@ -27,19 +27,19 @@ jobs:
           cd server
           tar czf app.tar.gz dist/
 
-      - name: debug output
-        run: |
-          echo "------- ls root"
-          ls
-          echo "------- ls server"
-          cd server
-          ls
-          cd dist
-          echo "------- ls server/dist"
-          ls
+      # - name: debug output
+      #   run: |
+      #     echo "------- ls root"
+      #     ls
+      #     echo "------- ls server"
+      #     cd server
+      #     ls
+      #     cd dist
+      #     echo "------- ls server/dist"
+      #     ls
 
       - name: Upload build artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: server-dist
           path: server/app.tar.gz
@@ -59,7 +59,7 @@ jobs:
       #     ls
 
       - name: Download build artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: server-dist
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -100,7 +100,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.ref_name }}
           token: ${{ secrets.MY_PAT }}
