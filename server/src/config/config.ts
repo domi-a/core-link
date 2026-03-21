@@ -9,6 +9,7 @@ const fallbackConfig = {
   viewHost: 'http://localhost:3000', // to be replaced
   appTitle: 'CoreLink', // to be replaced
   tenorKey: 'myTenorApiKey', // to be replaced
+  klipyKey: 'myKlipyApiKey', // to be replaced
   defaultImageUrl: 'https://media.tenor.com/67UlO1i1iB0AAAAC/good-fine.gif',
   defaultFrom: 'You',
   defaultTo: 'Someone',
@@ -33,6 +34,7 @@ function getEnv() {
     viewHost: process.env.HOST,
     appTitle: process.env.APP_TITLE,
     tenorKey: process.env.TENOR_KEY,
+    klipyKey: process.env.KLIPY_KEY,
     defaultImageUrl: process.env.DEFAULT_ENTRY_IMAGEURL,
     defaultFrom: process.env.DEFAULT_ENTRY_FROM,
     defaultTo: process.env.DEFAULT_ENTRY_TO,
@@ -58,6 +60,7 @@ function getConfig(): Config {
     viewHost: rawConf.viewHost || fallbackConfig.viewHost,
     appTitle: rawConf.appTitle || fallbackConfig.appTitle,
     tenorKey: rawConf.tenorKey || fallbackConfig.tenorKey,
+    klipyKey: rawConf.klipyKey || fallbackConfig.klipyKey,
     defaultEntry: {
       imageUrl: rawConf.defaultImageUrl || fallbackConfig.defaultImageUrl,
       from: rawConf.defaultFrom || fallbackConfig.defaultFrom,
@@ -77,6 +80,7 @@ interface Config {
   viewHost: string;
   appTitle: string;
   tenorKey: string;
+  klipyKey: string;
   defaultEntry: Omit<CoreLinkCreate, 'fixateForDays'>;
 }
 export const config = getConfig();

@@ -4,19 +4,14 @@ import { config } from '../config/config';
 import TenorClient from './tenor-gif-api';
 import { SearchResponse } from './tenor-gif-api/api/SearchService';
 
-const baseUrl = 'https://tenor.googleapis.com/v2';
-// mediaFilter:
-//   | 'gif' // 100%
-//   | 'nanogif' // 1,7%
-//   | 'tinygif' // 8%
-//   | 'mediumgif' //70%
+const baseUrl = 'https://api.klipy.com/v2';
 const defaultQueryParams = {
   limit: 32,
   media_filter: 'gif,nanogif,tinygif,mediumgif',
 };
 
-export class TenorService {
-  client = new TenorClient(config.tenorKey, baseUrl, 'corelink');
+export class KlipyService {
+  client = new TenorClient(config.klipyKey, baseUrl, 'corelink');
   public get(search: string, next?: string) {
     return this.client.search
       .query({

@@ -11,7 +11,7 @@
 	},
 	"info": {
 		"title": "server",
-		"version": "0.5.0",
+		"version": "0.6.3",
 		"license": {
 			"name": "ISC"
 		},
@@ -20,9 +20,9 @@
 		}
 	},
 	"paths": {
-		"/api/tenor/search": {
+		"/api/gifsearch/tenor": {
 			"get": {
-				"operationId": "Search",
+				"operationId": "TenorSearch",
 				"responses": {
 					"200": {
 						"description": "OK",
@@ -37,11 +37,101 @@
 														"type": "number",
 														"format": "double"
 													},
-													"url": {},
-													"mediumUrl": {},
-													"tinyUrl": {},
-													"nanoUrl": {},
-													"id": {}
+													"url": {
+														"type": "string"
+													},
+													"mediumUrl": {
+														"type": "string"
+													},
+													"tinyUrl": {
+														"type": "string"
+													},
+													"nanoUrl": {
+														"type": "string"
+													},
+													"id": {
+														"type": "string"
+													}
+												},
+												"required": [
+													"height2Width",
+													"url",
+													"mediumUrl",
+													"tinyUrl",
+													"nanoUrl",
+													"id"
+												],
+												"type": "object"
+											},
+											"type": "array"
+										},
+										"next": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"list",
+										"next"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "str",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "query",
+						"name": "next",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/api/gifsearch/klipy": {
+			"get": {
+				"operationId": "KlipySearch",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"list": {
+											"items": {
+												"properties": {
+													"height2Width": {
+														"type": "number",
+														"format": "double"
+													},
+													"url": {
+														"type": "string"
+													},
+													"mediumUrl": {
+														"type": "string"
+													},
+													"tinyUrl": {
+														"type": "string"
+													},
+													"nanoUrl": {
+														"type": "string"
+													},
+													"id": {
+														"type": "string"
+													}
 												},
 												"required": [
 													"height2Width",
