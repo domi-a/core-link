@@ -52,7 +52,7 @@ describe('full app - important usecases', () => {
     const text = getByDataTest(res, 'text').outerHTML;
     expect(text).toContain('attach a message to this coin');
     expect(getByDataTest(res, 'img').outerHTML).toContain(
-      ' src=\"https://media.tenor.com/67UlO1i1iB0AAAAC/good-fine.gif\"'
+      ' src=\"https://static.klipy.com/ii/d7aec6f6f171607374b2065c836f92f4/af/16/LChwqHWC.gif\"'
     );
   });
 
@@ -148,7 +148,7 @@ describe('full app - important usecases', () => {
     const text = getByDataTest(res, 'text').outerHTML;
     expect(text).toContain('in menu to enter your own message');
     expect(getByDataTest(res, 'img').outerHTML).toEqual(
-      '<img class="w-100 border border-dark border-2 rounded-2" src="https://media.tenor.com/67UlO1i1iB0AAAAC/good-fine.gif" data-test="img">'
+      '<img class="w-100 border border-dark border-2 rounded-2" src="https://static.klipy.com/ii/d7aec6f6f171607374b2065c836f92f4/af/16/LChwqHWC.gif" data-test="img">'
     );
     expect(superQuery(res, '#url').value).toContain(
       'http://localhost:3001/view/'

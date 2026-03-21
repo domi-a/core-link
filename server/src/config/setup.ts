@@ -8,7 +8,6 @@ import { MongoDBMemoryServer } from '../persistance/memDB';
 import { MongoDB } from '../persistance/mongoDB';
 import { CoreLinkService } from '../services/coreLinkService';
 import { KlipyService } from '../services/klipyService';
-import { TenorService } from '../services/tenorService';
 import { config } from './config';
 import { iocContainer } from './ioc';
 
@@ -33,7 +32,6 @@ export function registerIocDependencies() {
   [
     CoreLinkRepository,
     CoreLinkService,
-    TenorService,
     KlipyService,
     GifSearchController,
   ].forEach((item) => {

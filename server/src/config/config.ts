@@ -8,9 +8,9 @@ const fallbackConfig = {
   dbName: 'test',
   viewHost: 'http://localhost:3000', // to be replaced
   appTitle: 'CoreLink', // to be replaced
-  tenorKey: 'myTenorApiKey', // to be replaced
   klipyKey: 'myKlipyApiKey', // to be replaced
-  defaultImageUrl: 'https://media.tenor.com/67UlO1i1iB0AAAAC/good-fine.gif',
+  defaultImageUrl:
+    'https://static.klipy.com/ii/d7aec6f6f171607374b2065c836f92f4/af/16/LChwqHWC.gif',
   defaultFrom: 'You',
   defaultTo: 'Someone',
   defaultText:
@@ -33,7 +33,6 @@ function getEnv() {
     dbName: process.env.DBNAME,
     viewHost: process.env.HOST,
     appTitle: process.env.APP_TITLE,
-    tenorKey: process.env.TENOR_KEY,
     klipyKey: process.env.KLIPY_KEY,
     defaultImageUrl: process.env.DEFAULT_ENTRY_IMAGEURL,
     defaultFrom: process.env.DEFAULT_ENTRY_FROM,
@@ -59,7 +58,6 @@ function getConfig(): Config {
     dbName: rawConf.dbName || fallbackConfig.dbName,
     viewHost: rawConf.viewHost || fallbackConfig.viewHost,
     appTitle: rawConf.appTitle || fallbackConfig.appTitle,
-    tenorKey: rawConf.tenorKey || fallbackConfig.tenorKey,
     klipyKey: rawConf.klipyKey || fallbackConfig.klipyKey,
     defaultEntry: {
       imageUrl: rawConf.defaultImageUrl || fallbackConfig.defaultImageUrl,
@@ -79,7 +77,6 @@ interface Config {
   dbName: string;
   viewHost: string;
   appTitle: string;
-  tenorKey: string;
   klipyKey: string;
   defaultEntry: Omit<CoreLinkCreate, 'fixateForDays'>;
 }
