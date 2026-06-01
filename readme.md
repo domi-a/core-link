@@ -52,7 +52,7 @@ you need nfc tools on your phone to write the created link to the nfc-tag [andro
 minimum keys to change
 
 - `HOST` > the domain/url your service is reachable
-- `TENOR_KEY` > tenor api_key
+- `KLIPY_KEY` > klipy api_key
 - `APP_TITLE` > title of your service
 
 ### development

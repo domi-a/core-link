@@ -2,12 +2,12 @@
 
 import { Express } from 'express';
 import { closeExperss, initExpress } from '../app';
-import { TenorController } from '../controllers/tenorController';
+import { GifSearchController } from '../controllers/gifSearchController';
 import { CoreLinkRepository } from '../persistance/coreLinkRepo';
 import { MongoDBMemoryServer } from '../persistance/memDB';
 import { MongoDB } from '../persistance/mongoDB';
 import { CoreLinkService } from '../services/coreLinkService';
-import { TenorService } from '../services/tenorService';
+import { KlipyService } from '../services/klipyService';
 import { config } from './config';
 import { iocContainer } from './ioc';
 
@@ -29,17 +29,20 @@ export async function shutdown() {
 }
 
 export function registerIocDependencies() {
-  [CoreLinkRepository, CoreLinkService, TenorService, TenorController].forEach(
-    (item) => {
-      try {
-        iocContainer.register(item, () => {
-          return new item();
-        });
-      } catch (e) {
-        console.error('error ioc setup', e);
-      }
+  [
+    CoreLinkRepository,
+    CoreLinkService,
+    KlipyService,
+    GifSearchController,
+  ].forEach((item) => {
+    try {
+      iocContainer.register(item, () => {
+        return new item();
+      });
+    } catch (e) {
+      console.error('error ioc setup', e);
     }
-  );
+  });
 }
 
 export async function initDb() {

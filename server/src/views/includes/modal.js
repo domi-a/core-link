@@ -13,7 +13,7 @@ function openGifModal() {
   modal.show();
   dialogInputEl.addEventListener('keydown', (event) => {
     if (event.keyCode === 13) {
-      searchTenor();
+      searchGif();
       searchButtonEl.focus();
       return;
     }
@@ -58,13 +58,13 @@ function searchFinished(next) {
 
 let [leftChilds, rightChilds] = [[], []];
 let [leftHeightRatio, rightHeightRatio] = [0, 0];
-function searchTenor(nextStr) {
+function searchGif(nextStr) {
   const value = document.querySelector(`#gif-search`).value;
   if (value) {
     searchStarted();
     const url = !nextStr
-      ? `/api/tenor/search?str=${value}`
-      : `/api/tenor/search?str=${value}&next=${nextStr}`;
+      ? `/api/gifsearch/klipy?str=${value}`
+      : `/api/gifsearch/klipy?str=${value}&next=${nextStr}`;
     httpGet(url)
       .then(({ list, next }) => {
         if (!nextStr) {
@@ -108,12 +108,12 @@ function createImage(entry) {
   return a;
 }
 
-function nextTenor() {
-  searchTenor(nextStr);
+function nextGifSearch() {
+  searchGif(nextStr);
 }
-function initTenor() {
+function initGifSearch() {
   nextStr = undefined;
-  searchTenor();
+  searchGif();
 }
 
 function selectGif(url) {

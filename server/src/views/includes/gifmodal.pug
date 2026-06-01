@@ -6,14 +6,14 @@
         button.btn-close(type='button' data-bs-dismiss='modal' aria-label='Close')
       .modal-body
         div(class="input-group flex-nowrap mb-4")
-          input(id="gif-search" class="form-control" type="text" maxlength="32" placeholder="search tenor")
-          button(class="input-group-text btn btn-dark" id="search-button" type="button" onclick="initTenor()")="search"
+          input(id="gif-search" class="form-control" type="text" maxlength="32" placeholder="search klipy")
+          button(class="input-group-text btn btn-dark" id="search-button" type="button" onclick="initGifSearch()")="search"
         div(id="gif-prev-cont" class="d-flex flex-wrap")
           div(class="left w-50")
           div(class="right w-50")
         div(id="control")
           div(class="d-flex justify-content-center align-items-center")
-            button(class="btn btn-dark btn-lg flex-fill m-4 visually-hidden" type="button" onclick="nextTenor()" id="more") load more
+            button(class="btn btn-dark btn-lg flex-fill m-4 visually-hidden" type="button" onclick="nextGifSearch()" id="more") load more
           .d-flex.justify-content-center(id="gif-loading" class="m-4 visually-hidden")
             .spinner-border(role='status')
               span.visually-hidden Loading...

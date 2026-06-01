@@ -4,7 +4,7 @@
 import type { TsoaRoute } from '@tsoa/runtime';
 import {  fetchMiddlewares, ExpressTemplateService } from '@tsoa/runtime';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { TenorController } from './../src/controllers/tenorController';
+import { GifSearchController } from './../src/controllers/gifSearchController';
 import { iocContainer } from './../src/config/ioc';
 import type { IocContainer, IocContainerFactory } from '@tsoa/runtime';
 import type { Request as ExRequest, Response as ExResponse, RequestHandler, Router } from 'express';
@@ -31,31 +31,31 @@ export function RegisterRoutes(app: Router) {
 
 
     
-        const argsTenorController_search: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsGifSearchController_klipySearch: Record<string, TsoaRoute.ParameterSchema> = {
                 str: {"in":"query","name":"str","required":true,"dataType":"string"},
                 next: {"in":"query","name":"next","dataType":"string"},
         };
-        app.get('/api/tenor/search',
-            ...(fetchMiddlewares<RequestHandler>(TenorController)),
-            ...(fetchMiddlewares<RequestHandler>(TenorController.prototype.search)),
+        app.get('/api/gifsearch/klipy',
+            ...(fetchMiddlewares<RequestHandler>(GifSearchController)),
+            ...(fetchMiddlewares<RequestHandler>(GifSearchController.prototype.klipySearch)),
 
-            async function TenorController_search(request: ExRequest, response: ExResponse, next: any) {
+            async function GifSearchController_klipySearch(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsTenorController_search, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsGifSearchController_klipySearch, request, response });
 
                 const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
 
-                const controller: any = await container.get<TenorController>(TenorController);
+                const controller: any = await container.get<GifSearchController>(GifSearchController);
                 if (typeof controller['setStatus'] === 'function') {
                 controller.setStatus(undefined);
                 }
 
               await templateService.apiHandler({
-                methodName: 'search',
+                methodName: 'klipySearch',
                 controller,
                 response,
                 next,

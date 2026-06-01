@@ -11,7 +11,7 @@
 	},
 	"info": {
 		"title": "server",
-		"version": "0.5.0",
+		"version": "0.6.3",
 		"license": {
 			"name": "ISC"
 		},
@@ -20,9 +20,9 @@
 		}
 	},
 	"paths": {
-		"/api/tenor/search": {
+		"/api/gifsearch/klipy": {
 			"get": {
-				"operationId": "Search",
+				"operationId": "KlipySearch",
 				"responses": {
 					"200": {
 						"description": "OK",
@@ -37,11 +37,21 @@
 														"type": "number",
 														"format": "double"
 													},
-													"url": {},
-													"mediumUrl": {},
-													"tinyUrl": {},
-													"nanoUrl": {},
-													"id": {}
+													"url": {
+														"type": "string"
+													},
+													"mediumUrl": {
+														"type": "string"
+													},
+													"tinyUrl": {
+														"type": "string"
+													},
+													"nanoUrl": {
+														"type": "string"
+													},
+													"id": {
+														"type": "string"
+													}
 												},
 												"required": [
 													"height2Width",
